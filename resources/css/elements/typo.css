@@ -1,0 +1,60 @@
+/**
+ * Typography CSS File
+ *
+ * This file contains the typography styles for the Codehills Kickstarter theme.
+ * It includes styles for fonts, general text styles, headlines, and content elements.
+ *
+ * @since 2.0.0
+ * @package WordPress
+ * @subpackage Codehills Kickstarter Theme
+ */
+
+/********************** Typo ************************* *
+ *  1. Fonts
+ *  2. General
+ *  3. Headlines
+ *  4. Content Elements
+*****************************************************/
+
+/********************* 1. Fonts *********************/
+
+/******************** 2. General ********************/
+
+/******************** 3. Headline ********************/
+
+h1, .uk-h1,
+h2, .uk-h2,
+h3, .uk-h3,
+h4, .uk-h4
+h5 {
+    color: #0B1709;
+    font-family: "Outfit", sans-serif;
+    font-weight: 600;
+    line-height: 1;
+}
+h1 {
+    font-size: 96px;
+}
+h2, .uk-h2 {}
+h3, .uk-h3 {}
+h4, .uk-h4 {}
+
+/**************** 4. Content Elements ****************/
+
+p:last-of-type {
+    margin: 0;
+}
+a {
+    text-decoration: none;
+    color: #565656; 
+}
+a:hover {
+    text-decoration: none;
+    color: #0B1709; 
+}
+strong {
+    font-weight: 700;
+}
+em {
+    color: inherit;
+}

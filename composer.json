@@ -1,0 +1,35 @@
+{
+    "name": "alanmolnar/codehills-wp-starter-theme",
+    "description": "Codehills Studio Kickstarter WordPress theme, built from scratch with UI Kit v3 and OOP PHP",
+    "type": "project",
+    "keywords": [
+        "wordpress",
+        "boilerplate",
+        "wordpress theme boilerplate",
+        "boilerplate for wordpress theme",
+        "wordpress theme",
+        "wts",
+        "starter theme",
+        "wordpress starter theme",
+        "wordpress kickstart theme",
+        "wordpress kickstarter theme"
+    ],
+    "readme": "README.MD",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "Codehills Studio",
+            "email": "alan@codehills.rs"
+        }
+    ],
+    "support": {
+        "email": "alan@codehills.rs"
+    },
+    "require": {
+    },
+    "autoload": {
+        "psr-4": {
+            "CodehillsKickstarter\\": "app/"
+        }
+    }
+}

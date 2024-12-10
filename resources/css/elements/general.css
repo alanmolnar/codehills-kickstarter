@@ -1,0 +1,145 @@
+/**
+ * General CSS File
+ *
+ * This file contains the general styles for the Codehills Kickstarter theme. It includes
+ * CSS variables, styles for the html and body elements, container styles, and global styles.
+ *
+ * @since 2.0.0
+ * @package WordPress
+ * @subpackage Codehills Kickstarter Theme
+ */
+
+/**************** General styles ******************** *
+ *  1. CSS variables
+ *  2. html, body
+ *  3. Containers
+ *  4. Global styles
+****************************************************/
+
+/***************** 1. CSS variables  ***************** */
+
+:root {
+    /* Fonts */
+    --kickstarter-font-primary: "Outfit", sans-serif;
+
+    /* Colors */
+    --kickstarter-primary-color: #292B2A;
+    --kickstarter-secondary-color: #6CAD4F;
+    --kickstarter-placeholder-color: #9F9FAC;
+}
+
+/******************* 2. html, body ****************** */
+
+html, body {
+    background: #fff;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+/******************* 3. Containers ****************** */
+
+.uk-container {
+    max-width: 1140px;
+    position: relative;
+}
+
+/***************** 4. Global styles ***************** */
+
+*,
+*:before,
+*:after {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+a,
+button,
+.transition {
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+.transition-slow {
+    -webkit-transition-duration: 1.5s;
+    -moz-transition-duration: 1.5s;
+    -o-transition-duration: 1.5s;
+    transition-duration: 1.5s;
+}
+.no-transition {
+    -webkit-transition: none;
+    -moz-transition: none;
+    -o-transition: none;
+    transition: none;
+}
+*:focus {
+    outline: none !important;
+}
+
+/**** 4. Misc ****/
+
+/**** Preloader ****/
+
+html.preloader-active::before {
+    content: "";
+    display: block;
+    top: 50%;
+    left: 50%;
+    position: absolute;
+    width: 50px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    padding: 3px;
+    background: radial-gradient(farthest-side, var(--kickstarter-secondary-color) 95%, #0000) 50% 0/12px 12px no-repeat, radial-gradient(farthest-side, #0000 calc(100% - 5px), var(--kickstarter-secondary-color) calc(100% - 4px)) content-box;
+    animation: preloader 2s infinite ;
+    margin-top: -25px;
+    margin-left: -25px;
+    z-index: -1;
+}
+@keyframes preloader {
+    to {
+        transform: rotate(1turn)
+    }
+}
+
+/**** Die and dump ****/
+
+.dd-debug {
+    font-family: monospace;
+    font-size: 13px;
+    line-height: 1.2;
+    background: #2d2d2d;
+    color: #fff;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+.dd-debug strong {
+    color: lime;
+}
+.dd-toggle {
+    cursor: pointer;
+    color: lime;
+    text-decoration: underline;
+}
+.dd-debug > .uk-hidden {
+    display: block !important;
+}
+.dd-debug > .dd-toggle {
+    display: none !important;
+}
+
+/**** Post and Pages WordPress default styling ****/
+
+.alignright {
+    float: right;
+    margin: 0 0 1em 1em;
+}
+.alignleft {
+    float: left;
+    margin: 0 1em 1em 0;
+}
+.aligncenter {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}

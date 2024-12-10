@@ -1,0 +1,71 @@
+/**
+ * Header and Footer CSS File
+ *
+ * This file contains the styles for the header, footer, and offcanvas menu
+ * for the Codehills Kickstarter theme. It includes styles for the header navigation,
+ * footer layout, and offcanvas menu elements.
+ *
+ * @since 2.0.0
+ * @package WordPress
+ * @subpackage Codehills Kickstarter Theme
+ */
+
+/**************** Header / Footer ******************* *
+ *  1. Header
+ *      1.1. Navigation
+ *  2. Footer
+ *  3. Offcanvas
+*****************************************************/
+
+/******************** 1. Header *********************/
+
+header {}
+
+/**** 1.1. Navigation ****/
+
+.uk-navbar-nav > li > a,
+.uk-navbar-item,
+.uk-navbar-toggle {
+    font-family: var(--kickstarter-font-primary), sans-serif;
+    color: var(--kickstarter-primary-color);
+    min-height: inherit;
+    font-size: 1rem;
+}
+
+/******************** 2. Footer *********************/
+
+footer {}
+
+/******************** 3. Offcanvas *********************/
+
+.uk-offcanvas {
+    z-index: 9081;
+}
+.uk-offcanvas-bar {
+    background: rgba(255, 255, 255, 1);
+    width: 100vw;
+    padding: 60px 25px 40px;
+}
+.uk-offcanvas-bar .uk-close {
+    color: #0B1709;
+    right: 50%;
+    top: 15px;
+    transform: translateX(50%);
+}
+.uk-offcanvas-bar .uk-logo a {
+    color: #0B1709;
+}
+.uk-offcanvas-bar .uk-nav a {
+    color: #0B1709;
+    font-size: 15px;
+    padding: 10px 0;
+    font-weight: 600;
+    justify-content: center;
+}
+.uk-offcanvas-bar ul.sub-menu {
+    margin-bottom: 20px;
+}
+.uk-offcanvas-bar ul.sub-menu a {
+    font-size: 13px;
+    font-weight: 400;
+}

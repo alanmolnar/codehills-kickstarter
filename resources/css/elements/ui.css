@@ -1,0 +1,64 @@
+/**
+ * UI CSS File
+ *
+ * This file contains the styles for various UI elements in the Codehills Kickstarter theme.
+ * It includes styles for buttons, forms, and miscellaneous UI elements.
+ *
+ * @since 2.0.0
+ * @package WordPress
+ * @subpackage Codehills Kickstarter Theme
+ */
+
+/*********************** UI ************************* *
+ *  1. Buttons
+ *  2. Forms
+ *      2.1. Input
+ *      2.2. Placeholder
+ *      2.3. Misc Form Elements
+ *  3. Misc UI Elements
+****************************************************/
+
+/******************* 1. Buttons ********************/
+
+.uk-button {}
+.uk-button-primary {}
+.uk-button-primary:hover, 
+.uk-button-primary:focus {
+    color: #fff;
+    background-color: #0B1709;
+    border-color: #0B1709;
+}
+
+/******************** 2. Forms *********************/
+
+/**** 2.1. Input ****/
+
+.uk-input,
+.uk-textarea,
+.uk-select,
+.uk-select:not([multiple]):not([size]) {
+    height: inherit;
+}
+.uk-input:focus,
+.uk-textarea:focus {
+    border-color: var(--kickstarter-primary-color);
+}
+
+/**** 2.2. Placeholder ****/
+
+.uk-input::-ms-input-placeholder {
+    color: var(--kickstarter-placeholder-color) !important;
+}
+.uk-input::placeholder {
+    color: var(--kickstarter-placeholder-color);
+}
+.uk-textarea::-ms-input-placeholder {
+    color: var(--kickstarter-placeholder-color) !important;
+}
+.uk-textarea::placeholder {
+    color: var(--kickstarter-placeholder-color);
+}
+
+/**** 2.3. Misc Form Elements ****/
+
+/*************** 3. Misc UI Elements ****************/

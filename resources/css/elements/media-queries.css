@@ -1,0 +1,39 @@
+/**
+ * Media Queries CSS File
+ *
+ * This file contains the media queries for the Codehills Kickstarter theme. It includes
+ * breakpoints for different screen sizes, such as tablet portrait, tablet landscape,
+ * laptop, desktop, and large desktop screens.
+ *
+ * @since 2.0.0
+ * @package WordPress
+ * @subpackage Codehills Kickstarter Theme
+ */
+
+/***************** Media queries ******************* *
+ *  1. Small (tablet portrait) > 640px
+ *  2. Medium (tablet landscape) > 960px
+ *  3. Large (laptop) > 1200px
+ *  4. XLarge (desktop) > 1400px
+ *  5. XXLarge (desktop) > 1600px
+*****************************************************/
+
+/******** 1. Small (tablet portrait) > 640px ********/
+
+@media only screen and (min-width: 640px) {}
+
+/******* 2. Medium (tablet landscape) > 960px *******/
+
+@media only screen and (min-width: 960px) {}
+
+/************ 3. Large (laptop) > 1200px ************/
+
+@media only screen and (min-width: 1200px) {}
+
+/*********** 4. XLarge (desktop) > 1400px ***********/
+
+@media only screen and (min-width: 1400px) {}
+
+/*********** 5. XXLarge (desktop) > 1600px ***********/
+
+@media only screen and (min-width: 1600px) {}

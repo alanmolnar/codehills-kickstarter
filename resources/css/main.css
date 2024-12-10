@@ -1,0 +1,71 @@
+/**
+ * Main CSS File
+ *
+ * This file serves as the main stylesheet for the Codehills Kickstarter theme. It imports
+ * various CSS files that define the styles for the theme, including UI Kit styles,
+ * typography, general styles, UI elements, and header/footer styles.
+ *
+ * @since 2.0.0
+ * @package WordPress
+ * @subpackage Codehills Kickstarter Theme
+ */
+
+/***************** UI Kit v3 CSS *******************/
+@import url("./style.css");
+
+/****************** Typography *********************
+ *  1. Fonts
+ *  2. General
+ *  3. Headlines
+ *  4. Content Elements
+****************************************************/
+@import url("./elements/typo.css");
+
+/**************** General styles ********************
+ *  1. CSS variables
+ *  2. html, body
+ *  3. Containers
+ *  4. Global styles
+****************************************************/
+@import url("elements/general.css");
+
+/*********************** UI *************************
+ *  1. Buttons
+ *  2. Forms
+ *      2.1. Input
+ *      2.2. Placeholder
+ *      2.3. Misc Form Elements
+ *  3. Misc UI Elements
+****************************************************/
+@import url("elements/ui.css");
+
+/**************** Header / Footer *******************
+ *  1. Header
+ *      1.1. Navigation
+ *  2. Footer
+ *  3. Offcanvas
+*****************************************************/
+@import url("elements/header-footer.css");
+
+/********************* Pages ************************
+ *  1. Structural
+ *      1.1. Sections
+ *      1.2. Pagetitles
+ *  2. Theme pages
+ *      2.1. Homepage
+ *  3. WordPress pages
+****************************************************/
+@import url("elements/pages.css");
+
+/********************* Pages ************************
+ *  1. Hero
+****************************************************/
+@import url("elements/blocks.css");
+
+/****************** Media Queries ******************
+ *  1. Small (tablet portrait) > 640px
+ *  2. Medium (tablet landscape) > 960px
+ *  3. Large (laptop) > 1200px
+ *  4. XLarge (desktop) > 1600px
+****************************************************/
+@import url("elements/media-queries.css");

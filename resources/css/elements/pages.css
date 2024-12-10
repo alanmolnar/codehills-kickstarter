@@ -1,0 +1,38 @@
+/**
+ * Pages CSS File
+ *
+ * This file contains the styles for various pages in the Codehills Kickstarter theme.
+ * It includes structural styles, theme-specific page styles, and WordPress page styles.
+ *
+ * @since 2.0.0
+ * @package WordPress
+ * @subpackage Codehills Kickstarter Theme
+ */
+
+/*********************** Pages *********************** *
+ *  1. Structural
+ *      1.1. Sections
+ *      1.2. Pagetitles
+ *  2. Theme pages
+ *      2.1. Homepage
+ *  3. WordPress pages
+*****************************************************/
+
+/****************** 1. Structural *******************/
+
+/**** 1.1. Sections ****/
+
+.uk-section,
+article#main {
+    padding: 60px 0;
+}
+
+/**** 1.2. Pagetitles ****/
+
+#pagetitle {}
+
+/**************** 2. Theme pages *******************/
+
+/**** 2.1. Homepage ****/
+
+/*************** 3. WordPress pages ****************/

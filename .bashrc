@@ -1,0 +1,1 @@
+source D:/!!!-Job/WordPressStarterKits/codehills-kickstarter/console.sh
