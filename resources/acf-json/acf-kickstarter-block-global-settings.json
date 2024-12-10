@@ -343,11 +343,33 @@
                     "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
-                        "width": "",
+                        "width": "70",
                         "class": "",
                         "id": ""
                     },
                     "default_value": "#",
+                    "maxlength": "",
+                    "allow_in_bindings": 0,
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_6707c756eb37a"
+                },
+                {
+                    "key": "field_6758551014aa3",
+                    "label": "Additional Attributes",
+                    "name": "additional_attributes",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "30",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
                     "maxlength": "",
                     "allow_in_bindings": 0,
                     "placeholder": "",
@@ -1041,5 +1063,6 @@
     "hide_on_screen": "",
     "active": false,
     "description": "",
-    "show_in_rest": 0
+    "show_in_rest": 0,
+    "modified": 1733842203
 }

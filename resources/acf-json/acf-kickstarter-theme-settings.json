@@ -436,7 +436,7 @@
         {
             "key": "field_65888a034b021",
             "label": "Title",
-            "name": "faq_title",
+            "name": "faqs_title",
             "aria-label": "",
             "type": "text",
             "instructions": "",
@@ -457,7 +457,7 @@
         {
             "key": "field_6703e6639bb63",
             "label": "Title Tag",
-            "name": "faq_title_tag",
+            "name": "faqs_title_tag",
             "aria-label": "",
             "type": "select",
             "instructions": "",
@@ -491,7 +491,7 @@
         {
             "key": "field_6703e6b4a6aa0",
             "label": "Title Style",
-            "name": "faq_title_style",
+            "name": "faqs_title_style",
             "aria-label": "",
             "type": "select",
             "instructions": "",
@@ -523,7 +523,7 @@
         {
             "key": "field_65888a174b022",
             "label": "Subtitle",
-            "name": "faq_subtitle",
+            "name": "faqs_subtitle",
             "aria-label": "",
             "type": "text",
             "instructions": "",
@@ -544,7 +544,7 @@
         {
             "key": "field_6703e6899bb64",
             "label": "Subtitle Tag",
-            "name": "faq_subtitle_tag",
+            "name": "faqs_subtitle_tag",
             "aria-label": "",
             "type": "select",
             "instructions": "",
@@ -578,7 +578,7 @@
         {
             "key": "field_6703e6d7a6aa1",
             "label": "Subtitle Style",
-            "name": "faq_subtitle_style",
+            "name": "faqs_subtitle_style",
             "aria-label": "",
             "type": "select",
             "instructions": "",
@@ -610,7 +610,7 @@
         {
             "key": "field_65888a214b023",
             "label": "Content",
-            "name": "faq_content",
+            "name": "faqs_content",
             "aria-label": "",
             "type": "wysiwyg",
             "instructions": "",
@@ -631,7 +631,7 @@
         {
             "key": "field_670d19ed60c9c",
             "label": "Enable Filters",
-            "name": "faq_enable_filters",
+            "name": "faqs_enable_filters",
             "aria-label": "",
             "type": "true_false",
             "instructions": "",
@@ -652,7 +652,7 @@
         {
             "key": "field_65888aa2f6e83",
             "label": "FAQ",
-            "name": "faq",
+            "name": "faqs",
             "aria-label": "",
             "type": "repeater",
             "instructions": "",
@@ -1326,7 +1326,7 @@
                 "class": "",
                 "id": ""
             },
-            "layout": "block",
+            "layout": "row",
             "pagination": 0,
             "min": 0,
             "max": 0,
@@ -1603,7 +1603,7 @@
             {
                 "param": "options_page",
                 "operator": "==",
-                "value": "dishd-theme-settings"
+                "value": "codehills-kickastarter-settings"
             }
         ]
     ],
@@ -1615,5 +1615,6 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "show_in_rest": 0
+    "show_in_rest": 0,
+    "modified": 1733830872
 }

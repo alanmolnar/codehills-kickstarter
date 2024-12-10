@@ -86,7 +86,7 @@
             {
                 "param": "post_type",
                 "operator": "==",
-                "value": "virtual-brand"
+                "value": "post"
             }
         ]
     ],
@@ -98,5 +98,6 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "show_in_rest": 0
+    "show_in_rest": 0,
+    "modified": 1733842805
 }
