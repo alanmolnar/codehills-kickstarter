@@ -29,10 +29,8 @@ defined( \'WPINC\' ) || exit;
 $block_global_settings = $args[\'block_global_settings\'];
 
 // Get block details
-$block_details = $args[\'block_details\'];
+$block_details = $args[\'block_details\']; ?>
 
-// Open the block section
-Builder::page_builder_block_start( $args[\'page_id\'] ); ?>
     <div class="' . $html_class_name . '-block">
         <div class="uk-container">
             <?php
