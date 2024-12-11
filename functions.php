@@ -74,7 +74,7 @@ if ( ! function_exists( 'codehills_theme_setup' ) ) :
     function codehills_theme_setup()
     {
         // Call TGM Plugin Activation
-        require_once get_template_directory() . '/app/libs/tgm-plugin/class-tgm-plugin-activation.php';
+        require_once get_template_directory() . '/includes/libs/tgm-plugin/class-tgm-plugin-activation.php';
 
         // Instantiate ThemeSetup class
         $theme_setup = new ThemeSetup();
