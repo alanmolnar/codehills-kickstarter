@@ -37,3 +37,14 @@ To clone a repository directly from GitHub, you can use the `git clone` command 
 6. Press Enter. Git will create a directory named after the repository in your current location, download all the repository's files, and set up the necessary Git structures for version control.
 
 You have successfully cloned the repository to your local machine. You can now navigate into the repository's directory and start working with the files.
+
+# Changelog
+
+## 2.0.1
+- Added two new commands for creating custom post type and taxonomy
+- Updated CustomPostTypes controller, to control only custom post types, taxonomies moved to the new controller
+- Added Taxonomies controller
+- Fixed PostsGrid class $categories variable warning
+- ThemeSetup, Taxonomy class added
+- CSS styles for dd() function added back to the main functions file
+- Added page header settings to the theme header template part
