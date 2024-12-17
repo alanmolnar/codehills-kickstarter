@@ -48,3 +48,4 @@ You have successfully cloned the repository to your local machine. You can now n
 - ThemeSetup, Taxonomy class added
 - CSS styles for dd() function added back to the main functions file
 - Added page header settings to the theme header template part
+- Folder /includes moved to the theme root
