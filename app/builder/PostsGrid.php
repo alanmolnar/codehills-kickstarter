@@ -91,7 +91,7 @@ class PostsGrid extends Builder
             'enable_filters'    => $enable_filters,
             'content'           => $content,
             'posts_query'       => $posts_query,
-            'categories'        => $categories
+            'categories'        => $taxonomy != null && $enable_filters && $posts_query->have_posts() ? $categories : null
         ] );
 
         // Reset the post data

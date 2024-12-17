@@ -1,4 +1,15 @@
 <?php
+/**
+ * New block view pattern
+ *
+ * This file is responsible for creating a new block view pattern in the Codehills Kickstarter theme.
+ * It retrieves necessary information from the console input to generate the block view.
+ *
+ * @since 2.0.0
+ * @package WordPress
+ * @subpackage Codehills Kickstarter Theme
+ */
+
 // Get the block html class name from the console input
 $html_class_name = $args['html_class_name'];
 

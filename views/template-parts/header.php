@@ -5,7 +5,7 @@
  * This template displays the site's header.
  * It contains site’s document type, meta information, links to stylesheets and scripts, and other data.
  *
- * @since 2.0.0
+ * @since 2.0.1
  * @package WordPress
  * @subpackage Codehills Kickstarter Theme
  */
@@ -30,10 +30,23 @@ defined( 'WPINC' ) || exit; ?>
         <?php wp_head(); ?>
     </head>
 
+    <?php
+        // Get page settings
+        $page_header_style          = get_field( 'page_header_style' ) || is_404() ? get_field( 'page_header_style' ) : 'light';
+        $page_header_position       = get_field( 'page_header_position' ) || is_404() ? get_field( 'page_header_position' ) : 'absolute';
+        $header_background_color    = get_field( 'header_background_color' ) ? get_field( 'header_background_color' ) : '';
+
+        // Set page settings for single posts
+        if( is_single() ) :
+            $page_header_style      = 'dark';
+            $page_header_position   = 'relative';
+        endif;
+    ?>
+
     <body <?php body_class(); ?> <?php echo get_field( 'enable_preloader', 'option' ) ? 'style="display: none;"' : ''; ?>>
         <!-- Header
         ============================================= -->
-        <header>
+        <header class="header-<?php echo $page_header_style; ?> header-<?php echo $page_header_position; ?> transition" <?php echo $header_background_color != '' ? 'style="background-color: ' . $header_background_color . ';"' : ''; ?>>
             <div class="uk-container">
                 <nav class="uk-navbar-container uk-navbar-transparent">
                     <div uk-navbar>

@@ -14,8 +14,8 @@
 namespace CodehillsKickstarter;
 
 use CodehillsKickstarter\Core\Widgets;
+use CodehillsKickstarter\Core\Taxonomies;
 use CodehillsKickstarter\Helpers\Helpers;
-
 use CodehillsKickstarter\Core\ThemePlugins;
 use CodehillsKickstarter\Core\AdminFunctions;
 use CodehillsKickstarter\Core\ThemeFunctions;
@@ -148,6 +148,9 @@ class ThemeSetup {
         // Instantiate CustomPostTypes class
         $custom_post_types = CustomPostTypes::instance();
 
+        // Instantiate Taxonomies class
+        $taxonomies = Taxonomies::instance();
+
         // Instantiate Widgets class
         $widgets = Widgets::instance();
 
@@ -266,23 +269,23 @@ class ThemeSetup {
      */
     public function theme_support()
     {
-        // Define and register starter content to showcase the theme on new sites.
+        // Define and register starter content to showcase the theme on new sites
         $starter_content = array(
             'widgets' => array(
-                // Place core-defined widgets in the sidebar area.
+                // Place core-defined widgets in the sidebar area
                 'codehills_main_sidebar' => array(
                     'search',
                 )
             ),
 
-            // Set up nav menus for each of the two areas registered in the theme.
+            // Set up nav menus for each of the two areas registered in the theme
             'nav_menus' => array(
-                // Assign a menu to the 'header' location.
+                // Assign a menu to the 'header' location
                 'primary' => array(
                     'name' => __('Main Nav', ThemeFunctions::TEXT_DOMAIN)
                 ),
 
-                // Assign a menu to the 'footer_nav' location.
+                // Assign a menu to the 'footer_nav' location
                 'footer_nav' => array(
                     'name' => __('Footer Nav', ThemeFunctions::TEXT_DOMAIN)
                 ),

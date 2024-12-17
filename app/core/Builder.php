@@ -81,7 +81,7 @@ class Builder {
             $block_class_name = self::$namespace_prefix . str_replace( 'Wordpress', 'WordPress', $block_class_name );
 
             // Check if class exists
-            if ( class_exists( $block_class_name ) && strpos( $block_class_name, 'Index' ) !== false ) :
+            if ( class_exists( $block_class_name ) && strpos( $block_class_name, 'Index' ) === false ) :
                 // Instantiate block class
                 $block = new $block_class_name();
             endif;

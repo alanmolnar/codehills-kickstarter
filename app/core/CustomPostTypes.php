@@ -31,6 +31,16 @@ class CustomPostTypes {
     private static $instance = null;
 
     /**
+     * Namespace prefix
+     * 
+     * @since 2.0.0
+     * @access private
+     * @var string The namespace prefix
+     */
+
+    private static $namespace_prefix = 'CodehillsKickstarter\\CPT\\';
+
+    /**
      * Instance
      *
      * Ensures only one instance of the class is loaded or can be loaded.
@@ -61,11 +71,35 @@ class CustomPostTypes {
         // Change dashboard Posts to News
         add_filter( 'init', array( $this, 'codehills_change_post_object' ) );
 
-        // Register Custom Post Type CustomCPT
-        add_action( 'init', array( $this, 'codehills_create_custom_cpt' ), 0 );
+        // Initialize custom post types
+        $this->initialize_custom_post_types();
+    }
 
-        // Register Taxonomy CustomCPT Category
-        add_action( 'init', array( $this, 'codehills_create_custom_tax' ) );
+    /**
+     * Initialize custom post types
+     *
+     * @since 2.0.0
+     * @access private
+     */
+    private function initialize_custom_post_types()
+    {
+        // Instantiate all custom post types from /app/cpt folder
+        $custom_post_types = glob( get_template_directory() . '/app/cpt/*.php' );
+
+        // Loop through custom_post_types
+        foreach( $custom_post_types as $post_type ) :
+            // Get custom post type class name
+            $cpt_class_name = str_replace( ' ', '', ucwords( str_replace( '_', ' ', basename( $post_type, '.php' ) ) ) );
+
+            // Create full path to class
+            $cpt_class_name = self::$namespace_prefix . $cpt_class_name;
+
+            // Check if class exists
+            if ( class_exists( $cpt_class_name ) && strpos( $cpt_class_name, 'Index' ) === false ) :
+                // Instantiate custom post type class
+                $post_type = new $cpt_class_name();
+            endif;
+        endforeach;
     }
 
     /**
@@ -96,116 +130,5 @@ class CustomPostTypes {
         $labels->all_items = 'All Articles';
         $labels->menu_name = 'News';
         $labels->name_admin_bar = 'News';
-    }
-
-    /**
-     * Register Custom Post Type CustomCPT
-     * Post Type Key: custom
-     * 
-     * @since 2.0.0
-     * @access public
-     */
-    public function codehills_create_custom_cpt()
-    {
-        // Get text domain
-        $text_domain = ThemeFunctions::TEXT_DOMAIN;
-
-        $labels = array(
-            'name'                      => __( 'CustomCPT', $text_domain ),
-            'singular_name'             => __( 'CustomCPT', $text_domain ),
-            'menu_name'                 => __( 'CustomCPTs', $text_domain ),
-            'name_admin_bar'            => __( 'CustomCPT', $text_domain ),
-            'archives'                  => __( 'CustomCPT Archives', $text_domain ),
-            'attributes'                => __( 'CustomCPT Attributes', $text_domain ),
-            'parent_item_colon'         => __( 'Parent CustomCPT:', $text_domain ),
-            'all_items'                 => __( 'All CustomCPTs', $text_domain ),
-            'add_new_item'              => __( 'Add New CustomCPT', $text_domain ),
-            'add_new'                   => __( 'Add New', $text_domain ),
-            'new_item'                  => __( 'New CustomCPT', $text_domain ),
-            'edit_item'                 => __( 'Edit CustomCPT', $text_domain ),
-            'update_item'               => __( 'Update CustomCPT', $text_domain ),
-            'view_item'                 => __( 'View CustomCPT', $text_domain ),
-            'view_items'                => __( 'View CustomCPTs', $text_domain ),
-            'search_items'              => __( 'Search CustomCPTs', $text_domain ),
-            'not_found'                 => __( 'Not found', $text_domain ),
-            'not_found_in_trash'        => __( 'Not found in Trash', $text_domain ),
-            'featured_image'            => __( 'Featured Image', $text_domain ),
-            'set_featured_image'        => __( 'Set featured image', $text_domain ),
-            'remove_featured_image'     => __( 'Remove featured image', $text_domain ),
-            'use_featured_image'        => __( 'Use as featured image', $text_domain ),
-            'insert_into_item'          => __( 'Insert into CustomCPT', $text_domain ),
-            'uploaded_to_this_item'     => __( 'Uploaded to this CustomCPT', $text_domain ),
-            'items_list'                => __( 'CustomCPTs list', $text_domain ),
-            'items_list_navigation'     => __( 'CustomCPTs list navigation', $text_domain ),
-            'filter_items_list'         => __( 'Filter CustomCPT list', $text_domain ),
-        );
-
-        $args = array(
-            'label'                     => __( 'CustomCPT', $text_domain ),
-            'description'               => __( 'Codehills CustomCPTs', $text_domain ),
-            'labels'                    => $labels,
-            'menu_icon'                 => 'dashicons-image-filter',
-            'supports'                  => array('title', 'editor', 'excerpt', 'thumbnail', 'revisions', ),
-            'taxonomies'                => array(),
-            'public'                    => true,
-            'show_ui'                   => true,
-            'show_in_menu'              => true,
-            'menu_position'             => 5,
-            'show_in_admin_bar'         => true,
-            'show_in_nav_menus'         => true,
-            'can_export'                => true,
-            'has_archive'               => true,
-            'hierarchical'              => false,
-            'exclude_from_search'       => false,
-            'show_in_rest'              => true,
-            'publicly_queryable'        => true,
-            'rewrite'    		        => array( 'slug' => 'custom', 'with_front' => false ),
-            'capability_type'           => 'post',
-        );
-
-        register_post_type( 'custom', $args );
-    }
-
-    /**
-     * Register Taxonomy CustomCPT Category
-     * 
-     * @since 2.0.0
-     * @access public
-     */
-    public function codehills_create_custom_tax()
-    {
-        // Get text domain
-        $text_domain = ThemeFunctions::TEXT_DOMAIN;
-        
-        $labels = array(
-            'name'              => _x( 'CustomCPT Categories', 'taxonomy general name', $text_domain ),
-            'singular_name'     => _x( 'CustomCPT Category', 'taxonomy singular name', $text_domain ),
-            'search_items'      => __( 'Search CustomCPT Categories', $text_domain ),
-            'all_items'         => __( 'All CustomCPT Categories', $text_domain ),
-            'parent_item'       => __( 'Parent CustomCPT Category', $text_domain ),
-            'parent_item_colon' => __( 'Parent CustomCPT Category:', $text_domain ),
-            'edit_item'         => __( 'Edit CustomCPT Category', $text_domain ),
-            'update_item'       => __( 'Update CustomCPT Category', $text_domain ),
-            'add_new_item'      => __( 'Add New CustomCPT Category', $text_domain ),
-            'new_item_name'     => __( 'New CustomCPT Category Name', $text_domain ),
-            'menu_name'         => __( 'Categories', $text_domain ),
-        );
-        
-        $args = array(
-            'labels'                => $labels,
-            'description'           => __( 'CustomCPT Categories', $text_domain ),
-            'hierarchical'          => true,
-            'public'                => true,
-            'publicly_queryable'    => true,
-            'show_ui'               => true,
-            'show_in_menu'          => true,
-            'show_in_nav_menus'     => true,
-            'show_tagcloud'         => true,
-            'show_in_quick_edit'    => true,
-            'show_admin_column'     => true,
-            'show_in_rest'          => true,
-        );
-
-        register_taxonomy( 'custom-category', array( 'custom' ), $args );
     }
 }

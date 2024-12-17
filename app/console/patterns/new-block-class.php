@@ -1,4 +1,15 @@
 <?php
+/**
+ * New block class pattern
+ *
+ * This file is responsible for creating a new block class pattern in the Codehills Kickstarter theme.
+ * It retrieves necessary information from the console input to generate the block class.
+ *
+ * @since 2.0.0
+ * @package WordPress
+ * @subpackage Codehills Kickstarter Theme
+ */
+
 // Get the class name from the console input
 $class_name = $args['class_name'];
 

@@ -19,7 +19,22 @@
 
 /******************** 1. Header *********************/
 
-header {}
+header {
+    z-index: 999;
+    padding: 32px;
+    height: 90px;
+}
+header.header-absolute {
+    background: transparent !important;
+    position: fixed !important;
+    width: 100vw;
+    z-index: 9081;
+}
+header.uk-sticky.uk-active {
+    background: #fff !important;
+    padding: 16px 0;
+    height: auto;
+}
 
 /**** 1.1. Navigation ****/
 
@@ -30,6 +45,9 @@ header {}
     color: var(--kickstarter-primary-color);
     min-height: inherit;
     font-size: 1rem;
+}
+header.header-light .uk-navbar-nav > li > a {
+    color: #fff;
 }
 
 /******************** 2. Footer *********************/

@@ -102,32 +102,6 @@ html.preloader-active::before {
     }
 }
 
-/**** Die and dump ****/
-
-.dd-debug {
-    font-family: monospace;
-    font-size: 13px;
-    line-height: 1.2;
-    background: #2d2d2d;
-    color: #fff;
-    padding: 10px;
-    margin-bottom: 10px;
-}
-.dd-debug strong {
-    color: lime;
-}
-.dd-toggle {
-    cursor: pointer;
-    color: lime;
-    text-decoration: underline;
-}
-.dd-debug > .uk-hidden {
-    display: block !important;
-}
-.dd-debug > .dd-toggle {
-    display: none !important;
-}
-
 /**** Post and Pages WordPress default styling ****/
 
 .alignright {

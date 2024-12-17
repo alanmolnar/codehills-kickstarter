@@ -98,6 +98,33 @@ endif;
 if ( ! function_exists( 'dd' ) ) :
     function dd( ...$vars )
     {
+        // Add the CSS for the debug output
+        echo '<style>
+            .dd-debug {
+            font-family: monospace;
+            font-size: 13px;
+            line-height: 1.2;
+            background: #2d2d2d;
+            color: #fff;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .dd-debug strong {
+            color: lime;
+        }
+        .dd-toggle {
+            cursor: pointer;
+            color: lime;
+            text-decoration: underline;
+        }
+        .dd-debug > .uk-hidden {
+            display: block !important;
+        }
+        .dd-debug > .dd-toggle {
+            display: none !important;
+        }
+        </style>';
+        
         // Add the javascript that toggles the debug output
         echo '<script type="text/javascript">
             // Add event listener for the check if DOM is loaded
