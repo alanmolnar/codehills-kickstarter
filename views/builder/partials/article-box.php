@@ -11,9 +11,8 @@
  * @subpackage Codehills Kickstarter Theme
  */
 
-if( ! defined( 'WPINC' ) ) :
-    die;
-endif;
+// Prevent direct access to this file from url
+defined( 'WPINC' ) || exit;
 
 // Get partial data
 $categories     = $args['categories'];

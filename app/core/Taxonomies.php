@@ -85,7 +85,7 @@ class Taxonomies {
     private function initialize_custom_taxonomies()
     {
         // Instantiate all custom taxonomies from /app/taxonomy folder
-        $custom_taxonomies = glob( get_template_directory() . '/app/taxonomy/*.php' );
+        $custom_taxonomies = glob( get_template_directory() . '/app/Taxonomy/*.php' );
 
         // Loop through taxonomies
         foreach( $custom_taxonomies as $taxonomy ) :

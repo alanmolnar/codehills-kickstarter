@@ -49,3 +49,15 @@ You have successfully cloned the repository to your local machine. You can now n
 - CSS styles for dd() function added back to the main functions file
 - Added page header settings to the theme header template part
 - Folder /includes moved to the theme root
+
+## 2.0.2
+- Fixed 'disable_block' flag in Builder controller
+- Updated Builder class method get_ctas() with the $ctas parameter to support manual call for the block
+- Added titles order to the block titles template part
+- Updated headers in typo.css with theme primary font family and weight 700
+- Updated style.css html font family with theme primary font family, removed 'sans-serif'
+- Added function has_block( $block_name ) to the Builder controller
+- Folder names updated to fix error when website is moved to the web server (capitalized folder names) both in folder structure and in the controllers
+- Social links template part created and footer.php updated
+- Added two commands to the console.sh
+- Updated Block Global Settings JSON with allow_null = 1 for title and subtitle tag and style dropdowns

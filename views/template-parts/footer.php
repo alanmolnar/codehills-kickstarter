@@ -32,6 +32,13 @@ defined( 'WPINC' ) || exit; ?>
                         ));
                     endif;
                 ?>
+                
+                <h4><?php _e( 'Connect', ThemeFunctions::TEXT_DOMAIN ); ?></h4>
+
+                <?php
+                    // Get template part for social links
+                    get_template_part( 'views/template-parts/social-links' );
+                ?>
             </div>
         </footer> <!-- Footer end -->
 

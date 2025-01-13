@@ -10,9 +10,8 @@
  * @subpackage Codehills Kickstarter Theme
  */
 
-if( ! defined( 'WPINC' ) ) :
-    die;
-endif;
+// Prevent direct access to this file from url
+defined( 'WPINC' ) || exit;
 
 // Get details
 $category   = $args['faq']['category'];

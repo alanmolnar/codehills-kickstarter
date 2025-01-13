@@ -11,13 +11,15 @@
  * @subpackage Codehills Kickstarter Theme
  */
 
-if( ! defined( 'WPINC' ) ) :
-    die;
-endif;
+// Prevent direct access to this file from url
+defined( 'WPINC' ) || exit;
 
 if( isset( $args['block_global_settings'] ) && ! empty( $args['block_global_settings'] ) ) :
     // Get block global settings
     $block_global_settings = $args['block_global_settings'];
+
+    // Get titles order
+    $order_first = isset( $args['order_first'] ) ? $args['order_first'] : 'title';
 
     // Get details
     $title                      = $block_global_settings->title;
@@ -32,13 +34,17 @@ endif;
 
 // Display titles
 if( isset( $title ) || isset( $subtitle ) ) :
-    // Subtitle
-    if( isset( $subtitle ) && $subtitle != '' && ! $disable_global_subtitle ) :
-        echo '<' . $subtitle_tag . ' class="uk-' . $subtitle_style . '">' . $subtitle . '</' . $subtitle_tag . '>';
-    endif;
+    echo '<div class="block-titles uk-child-width-1-1" uk-grid>';
 
     // Title
     if( isset( $title ) && $title != '' && ! $disable_global_title ) :
-        echo '<' . $title_tag . ' class="uk-' . $title_style . ' uk-margin-remove-bottom">' . $title . '</' . $title_tag . '>';
+        echo '<div' . ( $order_first == 'subtitle' ? ' class="uk-flex-last"' : '' ) . '><' . $title_tag . ' class="uk-' . $title_style . '">' . $title . '</' . $title_tag . '></div>';
     endif;
+
+    // Subtitle
+    if( isset( $subtitle ) && $subtitle != '' && ! $disable_global_subtitle ) :
+        echo '<div><' . $subtitle_tag . ' class="uk-' . $subtitle_style . ' uk-margin-remove-top">' . $subtitle . '</' . $subtitle_tag . '></div>';
+    endif;
+
+    echo '</div>';
 endif;

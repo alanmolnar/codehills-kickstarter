@@ -84,7 +84,7 @@ class CustomPostTypes {
     private function initialize_custom_post_types()
     {
         // Instantiate all custom post types from /app/cpt folder
-        $custom_post_types = glob( get_template_directory() . '/app/cpt/*.php' );
+        $custom_post_types = glob( get_template_directory() . '/app/CPT/*.php' );
 
         // Loop through custom_post_types
         foreach( $custom_post_types as $post_type ) :

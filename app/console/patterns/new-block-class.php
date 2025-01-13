@@ -68,6 +68,7 @@ class ' . $class_name . ' extends Builder
      * 
      * @since 2.0.0
      * @access public
+     * @param array $args
      * @return view
      */
     public static function render( $args = null )

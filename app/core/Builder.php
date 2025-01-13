@@ -108,10 +108,15 @@ class Builder {
             // If block class name have 'Wordpress' in it, replace it with 'WordPress'
             $block_class_name = self::$namespace_prefix . str_replace( 'Wordpress', 'WordPress', $block_class_name );
 
+            // Check if block is disabled
+            $block_disabled = get_sub_field('disable_block');
+
             // Check if class exists
             if ( class_exists( $block_class_name ) ) :
-                // Render block
-                $block_class_name::render();
+                // Render block if it's not disabled
+                if ( ! $block_disabled ) :
+                    $block_class_name::render();
+                endif;
             else:
                 // Block notification
                 get_template_part( 'views/template-parts/block-notification', null, array(
@@ -269,6 +274,9 @@ class Builder {
         $subtitle       = get_sub_field( 'block_subtitle', $page_id ) ? get_sub_field( 'block_subtitle', $page_id ) : $subtitle;
         $subtitle_tag   = get_sub_field( 'block_subtitle_tag', $page_id ) ? get_sub_field( 'block_subtitle_tag', $page_id ) : $subtitle_tag;
         $subtitle_style = get_sub_field( 'block_subtitle_style', $page_id ) ? get_sub_field( 'block_subtitle_style', $page_id ) : $subtitle_style;
+
+        // Block call to actions
+        $have_cta       = isset( $args['have_cta'] ) ? $args['have_cta'] : get_sub_field( 'block_ctas', $page_id );
         
         // Return global settings as object
         return (object) array(
@@ -281,7 +289,7 @@ class Builder {
             'subtitle_style'    => $subtitle_style,
 
             // Block call to actions
-            'have_cta'          => get_sub_field( 'block_ctas', $page_id )
+            'have_cta'          => $have_cta
         );
     }
 
@@ -290,28 +298,74 @@ class Builder {
      * 
      * @since 2.0.0
      * @access public
+     * @param array $ctas The call to actions
      * @return void
      */
-    public static function get_ctas()
+    public static function get_ctas( $ctas = null )
     {
-        // Loop through CTAs
-        while( have_rows( 'block_ctas' ) ) : the_row();
-            $cta_label              = get_sub_field( 'label' );
-            $cta_url                = get_sub_field( 'url' );
-            $cta_style              = get_sub_field( 'style' ) ? get_sub_field( 'style' ) : 'uk-button-primary';
-            $additional_classes     = get_sub_field( 'additional_classes' );
-            $additional_attributes  = get_sub_field( 'additional_attributes' );
-            $new_tab                = get_sub_field( 'new_tab' );
+        // Check if block call to actions are passed as argument or it is called from the block
+        if( $ctas != null ) :
+            // Loop through manually called CTAs
+            foreach ( $ctas as $cta ) :
+                // CTA button
+                get_template_part( 'views/template-parts/cta-button', null, array(
+                    'cta_label'             => $cta['label'],
+                    'cta_url'               => $cta['url'],
+                    'cta_style'             => $cta['style'],
+                    'additional_classes'    => $cta['additional_classes'],
+                    'additional_attributes' => $cta['additional_attributes'],
+                    'new_tab'               => $cta['new_tab']
+                ) );
+            endforeach;
+        else:
+            // Loop through CTAs repeater
+            while( have_rows( 'block_ctas' ) ) : the_row();
+                $cta_label              = get_sub_field( 'label' );
+                $cta_url                = get_sub_field( 'url' );
+                $cta_style              = get_sub_field( 'style' ) ? get_sub_field( 'style' ) : 'uk-button-primary';
+                $additional_classes     = get_sub_field( 'additional_classes' );
+                $additional_attributes  = get_sub_field( 'additional_attributes' );
+                $new_tab                = get_sub_field( 'new_tab' );
 
-            // CTA button
-            get_template_part( 'views/template-parts/cta-button', null, array(
-                'cta_label'             => $cta_label,
-                'cta_url'               => $cta_url,
-                'cta_style'             => $cta_style,
-                'additional_classes'    => $additional_classes,
-                'additional_attributes' => $additional_attributes,
-                'new_tab'               => $new_tab
-            ) );
-        endwhile;
+                // CTA button
+                get_template_part( 'views/template-parts/cta-button', null, array(
+                    'cta_label'             => $cta_label,
+                    'cta_url'               => $cta_url,
+                    'cta_style'             => $cta_style,
+                    'additional_classes'    => $additional_classes,
+                    'additional_attributes' => $additional_attributes,
+                    'new_tab'               => $new_tab
+                ) );
+            endwhile;
+        endif;
+    }
+
+    /**
+     * Check if block is present
+     * 
+     * @since 2.0.2
+     * @access public
+     * @param string $block_name The block name
+     * @return bool The block flag
+     */
+    public static function has_block( $block_name )
+    {
+        // Get page id
+        $page_id = get_the_ID();
+
+        // Block flag
+        $block_flag = false;
+
+        // Check if block is present
+        if ( have_rows( 'page_builder', $page_id ) ) :
+            // Loop through blocks
+            while ( have_rows( 'page_builder', $page_id ) ) : the_row();
+                if ( get_row_layout() == $block_name ) :
+                    $block_flag = true;
+                endif;
+            endwhile;
+        endif;
+
+        return $block_flag;
     }
 }
