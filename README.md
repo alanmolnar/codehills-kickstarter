@@ -50,7 +50,7 @@ You have successfully cloned the repository to your local machine. You can now n
 - Added page header settings to the theme header template part
 - Folder /includes moved to the theme root
 
-## 2.0.2
+## 2.0.2 - Jan 13th, 2025
 - Fixed 'disable_block' flag in Builder controller
 - Updated Builder class method get_ctas() with the $ctas parameter to support manual call for the block
 - Added titles order to the block titles template part
