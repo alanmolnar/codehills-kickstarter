@@ -40,6 +40,13 @@ You have successfully cloned the repository to your local machine. You can now n
 
 # Changelog
 
+## 2.1.1 - Jan 20th, 2025
+- Updated template selector for archive page, to include all kind of post types and WooCommerce
+- Updated ACF group 'Page Builder', added 'Block Elements Switcher' clone fields to the FAQ and Testimonial flexible layout
+- Added ACF group 'Block Elements Switcher' to be used in blocks with global content
+- Updated FAQ and Testimonials block classes to use new 'Block Elements Switcher' cloned field
+- Added index.php in theme root
+
 ## 2.1.0 - Jan 20th, 2025
 - Twig templating system added
 - WordPress template hierarchy customized, selection between Twig and PHP templating system added

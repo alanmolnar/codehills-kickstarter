@@ -59,12 +59,18 @@ class Testimonials extends Builder
         $block_global_settings = Builder::get_block_global_settings( $page_id, $args, self::$id );
 
         // Get block details from manual block call
-        $content        = isset( $args['content'] ) ? $args['content'] : get_field( self::$id . '_content', 'option' );
-        $testimonials   = isset( $args['testimonials'] ) ? $args['testimonials'] : get_field( self::$id, 'option' );
+        $content                    = isset( $args['content'] ) ? $args['content'] : get_field( self::$id . '_content', 'option' );
+        $testimonials               = isset( $args['testimonials'] ) ? $args['testimonials'] : get_field( self::$id, 'option' );
+        $disable_global_title       = isset( $args['disable_global_title'] ) ? $args['disable_global_title'] : false;
+        $disable_global_subtitle    = isset( $args['disable_global_subtitle'] ) ? $args['disable_global_subtitle'] : false;
+        $disable_global_content     = isset( $args['disable_global_content'] ) ? $args['disable_global_content'] : false;
 
         // Block content
-        $content        = get_sub_field( 'content' ) ? get_sub_field( 'content' ) : $content;
-        $testimonials   = get_sub_field( 'testimonials' ) ? get_sub_field( 'testimonials' ) : get_field( self::$id, 'option' );
+        $content                                        = get_sub_field( 'content' ) ? get_sub_field( 'content' ) : $content;
+        $testimonials                                   = get_sub_field( 'testimonials' ) ? get_sub_field( 'testimonials' ) : get_field( self::$id, 'option' );
+        $block_global_settings->disable_global_title    = get_sub_field( 'disable_global_title' ) ? get_sub_field( 'disable_global_title' ) : $disable_global_title;
+        $block_global_settings->disable_global_subtitle = get_sub_field( 'disable_global_subtitle' ) ? get_sub_field( 'disable_global_subtitle' ) : $disable_global_subtitle;
+        $disable_global_content                         = get_sub_field( 'disable_global_content' ) ? get_sub_field( 'disable_global_content' ) : $disable_global_content;
         
         // Set block details
         $block_details = Helpers::collect( [

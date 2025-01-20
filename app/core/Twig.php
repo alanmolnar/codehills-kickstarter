@@ -200,20 +200,29 @@ class Twig {
                 );
                 break;
 
+            // Archive page
             case 'archive' :
                 $data = array(
                     'title'     => get_the_archive_title(),
-                    'taxonomy'  => get_queried_object()->taxonomy,
+                    'taxonomy'  => ! is_woocommerce() ? get_queried_object()->taxonomy : null,
                     'posts'     => get_posts( array(
-                        'post_type' => 'post',
-                        'tax_query' => array(
+                        'post_type' => get_post_type(),
+                        'tax_query' => ! is_woocommerce() ? array(
                             array(
                                 'taxonomy' => get_queried_object()->taxonomy,
                                 'field'    => 'term_id',
                                 'terms'    => get_queried_object()->term_id
                             )
-                        )
+                        ) : null
                     ) )
+                );
+                break;
+
+            // WooCommerce shop page
+            case 'woocommerce/shop' :
+                $data = array(
+                    'title'     => get_the_title(),
+                    'content'   => get_the_content()
                 );
                 break;
 
