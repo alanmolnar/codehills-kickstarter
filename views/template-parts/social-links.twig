@@ -1,0 +1,14 @@
+{% if have_rows( 'social', 'option' ) %}
+    <ul class="uk-iconnav">
+        {% for row in get_field( 'social', 'option' ) %}
+            {% set url = get_sub_field('url') %}
+            {% set icon = get_sub_field('icon') %}
+
+            <li>
+                <a class="transition" href="{{ url }}" rel="noopener noreferrer nofollow" target="_blank">
+                    <img class="uk-preserve" src="{{ icon.url }}" width="20" alt="{{ icon.alt }}" uk-svg>
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}

@@ -13,6 +13,10 @@
 
 namespace CodehillsKickstarter\Core;
 
+use Twig\Environment;
+use Twig\TwigFunction;
+use Twig\Loader\FilesystemLoader;
+
 // Prevent direct access to this file from url
 defined( 'WPINC' ) || exit;
 
@@ -48,7 +52,7 @@ class ThemeFunctions {
     }
 
     /**
-     * Class constructor
+     * Theme constants
      *
      * Register theme functions class constants
      *
@@ -95,6 +99,20 @@ class ThemeFunctions {
         // Loadmore posts, ajax
         add_action( 'wp_ajax_loadmore', array( $this, 'theme_loadmore_ajax_handler' ) );
         add_action( 'wp_ajax_nopriv_loadmore', array( $this, 'theme_loadmore_ajax_handler' ) );
+    }
+
+    /**
+     * Check if Twig is enabled
+     * 
+     * Check if Twig is enabled in the theme settings
+     * 
+     * @since 2.1.0
+     * @access public
+     * @return bool True if Twig is enabled, false otherwise
+     */
+    public static function twig_enabled()
+    {
+        return get_field( 'enable_twig', 'option' );
     }
 
     /**

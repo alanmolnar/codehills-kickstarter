@@ -10,7 +10,9 @@
  * @subpackage Codehills Kickstarter Theme
  */
 
+use CodehillsKickstarter\Core\Twig;
 use CodehillsKickstarter\ThemeSetup;
+use CodehillsKickstarter\Core\ThemeFunctions;
 
 // Prevent direct access to this file from url
 defined( 'WPINC' ) || exit;
@@ -73,6 +75,9 @@ spl_autoload_register( 'codehills_kickstarter_theme_autoLoader' );
 if ( ! function_exists( 'codehills_theme_setup' ) ) :
     function codehills_theme_setup()
     {
+        // Require the autoloader
+        require_once get_template_directory() . '/vendor/autoload.php';
+
         // Call TGM Plugin Activation
         require_once get_template_directory() . '/includes/libs/tgm-plugin/class-tgm-plugin-activation.php';
 
@@ -82,6 +87,7 @@ if ( ! function_exists( 'codehills_theme_setup' ) ) :
         // Initialize the theme setup
         $theme_setup->init();
     }
+
     add_action( 'after_setup_theme', 'codehills_theme_setup' );
 endif;
 
@@ -169,6 +175,7 @@ endif;
 /**
  * Recursive function to render debug variables.
  *
+ * @since 2.0.0
  * @param mixed $var The variable to render.
  * @return void
  */
@@ -238,5 +245,88 @@ if ( ! function_exists( 'render_debug_variable' ) ) :
             // Render the string
             echo htmlspecialchars( ( string ) $var );
         endif;
+    }
+endif;
+
+/**
+ * Custom template loader
+ * 
+ * This function loads custom templates from the '/templates' directory.
+ * 
+ * @since 2.1.0
+ * @uses codehills_get_template_hierarchy()
+ * @return string
+ */
+if ( ! function_exists( 'codehills_custom_template_loader' ) ) :
+    function codehills_custom_template_loader()
+    {
+        // Define template directory paths
+        $twig_template_dir  = get_template_directory() . '/templates/twig';
+        $php_template_dir   = get_template_directory() . '/templates/php';
+
+        // Add template_include hook
+        add_filter( 'template_include', function ( $template ) use ( $twig_template_dir, $php_template_dir ) {
+            global $wp_query;
+
+            // Get the template hierarchy
+            $hierarchy = codehills_get_template_hierarchy();
+
+            foreach ($hierarchy as $template_name) :
+                // Check if Twig is enabled and the Twig template exists
+                if( ThemeFunctions::twig_enabled() && file_exists( $twig_template_dir . '/' . $template_name . '.twig' ) ) :
+                    return Twig::load_twig_template( $twig_template_dir . '/' . $template_name . '.twig' );
+                // Check if the PHP template exists
+                elseif ( file_exists( $php_template_dir . '/' . $template_name . '.php' ) ) :
+                    return $php_template_dir . '/' . $template_name . '.php';
+                endif;
+            endforeach;
+
+            // Fallback to default
+            return $template;
+        } );
+    }
+
+    add_action( 'init', 'codehills_custom_template_loader' );
+endif;
+
+/**
+ * Get template hierarchy
+ * 
+ * This function returns the template hierarchy based on the current page.
+ * 
+ * @since 2.1.0
+ * @return array
+ */
+if ( ! function_exists( 'codehills_get_template_hierarchy' ) ) :
+    function codehills_get_template_hierarchy()
+    {
+        // Front page
+        if( is_front_page() ) :
+            return ['front-page', 'home', 'index'];
+        // Blog page
+        elseif( is_home() ) :
+            return ['home', 'index'];
+        // Single post
+        elseif( is_single() && ! is_singular() ) :
+            return ['single', 'index'];
+        // Single custom post
+        elseif( is_singular() ) :
+            return ['single-' . get_post_type(), 'single', 'index'];
+        // Single page
+        elseif( is_page() ) :
+            return ['page', 'index'];
+        // Category archive
+        elseif( is_archive() ) :
+            return ['archive', 'index'];
+        // Search results
+        elseif( is_search() ) :
+            return ['search', 'index'];
+        // 404 page
+        elseif( is_404() ) :
+            return ['404', 'index'];
+        endif;
+
+        // Fallback to default
+        return ['index'];
     }
 endif;

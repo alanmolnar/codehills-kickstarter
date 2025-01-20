@@ -13,6 +13,7 @@
 
 namespace CodehillsKickstarter;
 
+use CodehillsKickstarter\Core\Twig;
 use CodehillsKickstarter\Core\Widgets;
 use CodehillsKickstarter\Core\Taxonomies;
 use CodehillsKickstarter\Helpers\Helpers;
@@ -141,6 +142,9 @@ class ThemeSetup {
 
         // Set image sizes
         $this->set_image_sizes();
+
+        // Instantiate Twig class
+        $twig = Twig::instance();
 
         // Instantiate ThemeFunctions class
         $theme_functions = ThemeFunctions::instance();
@@ -301,6 +305,7 @@ class ThemeSetup {
         add_theme_support( 'html5', array( 'comment-list', 'comment-form', 'search-form', 'gallery', 'caption' ) );
         add_theme_support( 'post-formats', array( 'aside', 'gallery', 'link', 'image', 'quote', 'video', 'audio' ) );
         add_theme_support( 'starter-content', $starter_content );
+        add_theme_support( 'woocommerce' );
     }
 
     /**

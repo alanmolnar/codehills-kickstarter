@@ -35,6 +35,16 @@ $block_details = $args['block_details']; ?>
 
             // Content
             echo '<div class="uk-margin-top">' . $block_details->content . '</div>';
+
+            // CTA button
+            if( $block_global_settings->have_cta ) :
+                echo '<div class="uk-child-width-auto@s uk-flex-center uk-flex-left@m uk-margin-medium-top uk-grid-small" uk-grid>';
+
+                // Loop through CTAs
+                Builder::get_ctas( $block_global_settings->have_cta );
+
+                echo '</div>';
+            endif;
         ?>
     </div>
 </section> <!-- WordPress content block end -->

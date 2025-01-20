@@ -11,6 +11,9 @@
  * @subpackage Codehills Kickstarter Theme
  */
 
+use CodehillsKickstarter\Core\Twig;
+use CodehillsKickstarter\Core\ThemeFunctions;
+
 // Prevent direct access to this file from url
 defined( 'WPINC' ) || exit;
 
@@ -21,4 +24,4 @@ get_header();
 get_template_part( 'views/template-parts/main-loop' );
 
 // Include footer
-get_footer(); ?>
+get_footer();

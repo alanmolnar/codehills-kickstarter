@@ -1,0 +1,15 @@
+{% if cta_label != '' and cta_url != '' %}
+    <div>
+        <a href="{{ cta_url | e }}" class="uk-button uk-button-{{ cta_style }} {{ additional_classes }} uk-flex uk-flex-middle uk-flex-center" {{ new_tab ? 'rel="noopener noreferrer nofollow" target="_blank"' : '' }} {{ additional_attributes | raw }}>
+            {% if 'uk-button-icon' in additional_classes %}
+                <img class="uk-preserve uk-margin-small-right" src="{{ theme_url }}/assets/img/icon-instagram.svg" width="24" height="24" alt="Instagram" uk-svg>
+            {% endif %}
+
+            <span>{{ cta_label }}</span>
+
+            {% if 'uk-button-link-arrow' in additional_classes %}
+                <span class="uk-margin-small-left" uk-icon="icon: chevron-right; ratio: 0.9;"></span>
+            {% endif %}
+        </a>
+    </div>
+{% endif %}

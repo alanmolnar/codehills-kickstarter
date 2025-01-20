@@ -23,7 +23,7 @@ defined( 'WPINC' ) || exit; ?>
 
 <section class="uk-section">
     <div class="uk-container">
-        <h1><?php the_title(); ?></h1>
+        <h1><?php echo $args['title']; ?></h1>
 
         <p class="uk-text-large"><?php _e( 'Please use page builder to add blocks to the page.', ThemeFunctions::TEXT_DOMAIN ); ?></p>
     </div>

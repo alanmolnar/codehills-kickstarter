@@ -27,7 +27,7 @@ endif;
 echo '<div class="uk-grid-small" uk-grid>';
 
 // Image
-if( isset( $testimonial['image'] ) ) :
+if( isset( $testimonial['image'] ) && $testimonial['image'] != '' ) :
     echo '<div class="uk-width-auto">
         <img class="transition uk-border-circle" src="' . $testimonial['image']['url'] . '" width="64" height="64" alt="' . $testimonial['name'] . '">
     </div>';

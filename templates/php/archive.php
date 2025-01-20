@@ -16,7 +16,7 @@ defined( 'WPINC' ) || exit;
 // Include header
 get_header(); ?>
 
-    <section>
+    <section class="uk-section">
         <div class="uk-container">
             <h1 class="uk-margin-small-top">
                 <?php

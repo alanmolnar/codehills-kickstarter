@@ -13,6 +13,7 @@
 
 namespace CodehillsKickstarter\Builder;
 
+use CodehillsKickstarter\Core\Twig;
 use CodehillsKickstarter\Core\Builder;
 use CodehillsKickstarter\Helpers\Helpers;
 
@@ -66,19 +67,40 @@ class FAQs extends Builder
         $content        = get_sub_field( 'content' ) ? get_sub_field( 'content' ) : $content;
         $enable_filters = get_sub_field( 'enable_filters' ) ? get_sub_field( 'enable_filters' ) : $enable_filters;
         $faqs           = get_sub_field( 'faqs' ) ? get_sub_field( 'faqs' ) : get_field( self::$id, 'option' );
+
+        // Get empty array for filters
+        $filters = array();
+
+        // Loop through faqs
+        foreach( $faqs as $faq ) :
+            if( isset( $faq['category'] ) ) :
+                // Get category
+                $category = $faq['category'];
+
+                // Add category to filters
+                $filters[$category['value']] = $category['label'];
+            endif;
+        endforeach;
+
+        // Remove duplicates from associated array
+        $filters = array_unique( $filters, SORT_REGULAR );
         
         // Set block details
         $block_details = Helpers::collect( [
             'content'           => $content,
             'enable_filters'    => $enable_filters,
+            'filters'           => $filters,
             'faqs'              => $faqs
         ] );
 
-        // Render the block
-        get_template_part( 'views/builder/blocks/' . self::$filename, null, array(
+        // Block data
+        $data = array(
             'page_id'               => $page_id,
             'block_global_settings' => $block_global_settings,
             'block_details'         => $block_details
-        ) );
+        );
+
+        // Render the block
+        Builder::render_block( self::$filename, $data );
     }
 }

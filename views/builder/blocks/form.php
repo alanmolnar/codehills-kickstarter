@@ -52,7 +52,7 @@ $block_details = $args['block_details']; ?>
                 <?php
                     // Form
                     if( $block_details->form_shortcode != '' ) :
-                        echo do_shortcode( $block_details->form_shortcode );
+                        echo $block_details->form_shortcode;
                     endif;
                 ?>
             </div>

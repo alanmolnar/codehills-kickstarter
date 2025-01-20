@@ -1,0 +1,23 @@
+    {{ block_style | default('') | raw }}
+    
+    <div class="call-to-action-block call-to-action-block-{{ block_details.hash }} {{ block_details.block_fullscreen ? 'call-to-action-block-fullscreen' : '' }} cover-image uk-container uk-container-fullwidth uk-flex uk-flex-{{ block_details.vertical_align }}@m uk-flex-bottom">
+        <div class="uk-width-1-2@m uk-width-3-4@s">
+            {# Title and subtitle #}
+            {% include 'builder/partials/block-titles.twig' with { 'block_global_settings': block_global_settings } %}
+            
+            {# Content #}
+            {% if block_details.content != '' %}
+                <div class="cta-content uk-margin-top">
+                    {{ block_details.content | raw }}
+                </div>
+            {% endif %}
+
+            {# CTA button #}
+            {% if block_global_settings.have_cta %}
+                <div class="uk-child-width-auto@s uk-margin-top uk-grid-small" uk-grid>
+                    {{ get_ctas( block_global_settings.have_cta ) }}
+                </div>
+            {% endif %}
+         </div>
+    </div>
+</section> <!-- Call To Action block end -->

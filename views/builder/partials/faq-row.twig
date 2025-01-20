@@ -1,0 +1,7 @@
+<li class="{{ faq.category.value ? 'tag-' ~ faq.category.value : '' }}">
+    <a class="uk-accordion-title" href="#">
+        <div>{{ faq.question }}</div>
+    </a>
+
+    <div class="uk-accordion-content">{{ faq.answer | raw }}</div>
+</li>

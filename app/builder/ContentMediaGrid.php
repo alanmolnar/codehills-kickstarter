@@ -13,6 +13,7 @@
 
 namespace CodehillsKickstarter\Builder;
 
+use CodehillsKickstarter\Core\Twig;
 use CodehillsKickstarter\Core\Builder;
 use CodehillsKickstarter\Helpers\Helpers;
 
@@ -77,11 +78,14 @@ class ContentMediaGrid extends Builder
             'media'              => $media
         ] );
 
-        // Render the block
-        get_template_part( 'views/builder/blocks/' . self::$filename, null, array(
+        // Block data
+        $data = array(
             'page_id'               => $page_id,
             'block_global_settings' => $block_global_settings,
             'block_details'         => $block_details
-        ) );
+        );
+
+        // Render the block
+        Builder::render_block( self::$filename, $data );
     }
 }

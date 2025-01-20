@@ -1,0 +1,11 @@
+{% if get_field('logo', 'option') %}
+    {# Logo #}
+    <a class="uk-navbar-item uk-logo" href="{{ site_url }}">
+        <img class="uk-preserve" src="{{ get_field( 'logo', 'option' ) }}" width="165" height="40" alt="{{ blog_info }}" uk-svg>
+    </a>
+{% else %}
+    {# Theme default logo #}
+    <a href="{{ site_url }}/wp-admin/admin.php?page=codehills-kickastarter-settings">
+        <img class="uk-preserve uk-margin-top uk-margin-bottom" src="{{ theme_url }}/resources/img/theme/default-logo.svg" width="180" height="70" alt="Codehills Kickstarter" uk-svg>
+    </a>
+{% endif %}

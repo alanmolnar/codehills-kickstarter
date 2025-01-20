@@ -1,0 +1,49 @@
+    <div class="media-block">
+        {# Open container #}
+        {% if not block_details.fullwidth %}
+            <div class="uk-container">
+        {% endif %}
+
+        {# Title and subtitle #}
+        {% include 'builder/partials/block-titles.twig' with { 'block_global_settings': block_global_settings } %}
+        
+        <div class="uk-margin-top">
+            {# Image #}
+            {% if block_details.media_type == 'image' and block_details.image is defined and block_details.image %}
+                <img src="{{ block_details.image.url | e }}" alt="{{ block_details.image.alt | e }}">
+            {% endif %}
+
+            {# Video - MP4 #}
+            {% if block_details.media_type == 'mp4' and block_details.mp4_video is defined and block_details.mp4_video %}
+                <video src="{{ block_details.mp4_video.url | e }}" width="1920" height="1080" controls playsinline hidden uk-video></video>
+            {% endif %}
+
+            {# Video - YouTube #}
+            {% if block_details.media_type == 'youtube' and block_details.youtube_video_id is defined and block_details.youtube_video_id %}
+                <iframe src="https://www.youtube-nocookie.com/embed/{{ block_details.youtube_video_id | e }}?autoplay=0&amp;showinfo=0&amp;rel=0&amp;modestbranding=1&amp;playsinline=1" width="1920" height="1080" allowfullscreen uk-responsive uk-video="automute: true;"></iframe>
+            {% endif %}
+
+            {# Video - Vimeo #}
+            {% if block_details.media_type == 'vimeo' and block_details.vimeo_video_id is defined and block_details.vimeo_video_id %}
+                <iframe src="https://player.vimeo.com/video/{{ block_details.vimeo_video_id | e }}?badge=0&amp;autopause=0&amp;player_id=0&amp;" width="1920" height="1080" allow="autoplay; fullscreen; picture-in-picture; clipboard-write" uk-responsive uk-video="automute: true"></iframe>
+            {% endif %}
+        </div>
+
+        {# Content #}
+        {% if block_details.content != '' %}
+            <div class="uk-margin-top">{{ block_details.content | raw }}</div>
+        {% endif %}
+
+        {# CTA Button #}
+        {% if block_global_settings.have_cta %}
+            <div class="uk-child-width-auto@s uk-margin-medium-top uk-grid-small" uk-grid>
+                {{ get_ctas( block_global_settings.have_cta ) }}
+            </div>
+        {% endif %}
+
+        {# Close container #}
+        {% if not block_details.fullwidth %}
+            </div>
+        {% endif %}
+    </div>
+</section> <!-- Media block end -->

@@ -22,25 +22,10 @@ defined( 'WPINC' ) || exit;
 $block_global_settings = $args['block_global_settings'];
 
 // Get block details
-$block_details = $args['block_details']; ?>
+$block_details = $args['block_details'];
 
-    <style>
-        <?php
-            // Tablet
-            if( $block_details->image_mobile ) :
-                echo '.cta-block-' . $hash . '{' . ( $block_details->image_mobile ? 'background-image: url(' . esc_url( $block_details->image_mobile['url'] ) . ');' : '' ) . ' }';
-            endif;
-
-            // Desktop
-            if( $block_details->image_desktop ) : ?>
-                @media screen and (min-width: 960px) {
-                    <?php 
-                    echo '.cta-block-' . $block_details->hash . ' {' . ( $block_details->image_desktop ? 'background-image: url(' . esc_url( $block_details->image_desktop['url'] ) . ');' : '' ) . ' }';
-                    ?>
-                }
-            <?php endif;
-        ?>
-    </style>
+// Block style
+if( $args['block_style'] ) echo $args['block_style']; ?>
 
     <div class="call-to-action-block call-to-action-block-<?php echo $block_details->hash; ?> <?php echo $block_details->block_fullscreen ? 'call-to-action-block-fullscreen' : ''; ?> cover-image uk-container uk-container-fullwidth uk-flex uk-flex-<?php echo $block_details->vertical_align; ?>@m uk-flex-bottom">
         <div class="uk-width-<?php echo $block_details->content_width; ?>@l uk-width-1-2@m uk-width-3-4@s">

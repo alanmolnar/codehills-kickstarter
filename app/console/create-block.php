@@ -95,3 +95,29 @@ else:
     // Output success message
     echo "Block template file '{$block_view_filename}' created successfully in views/builder folder!\n";
 endif;
+
+// Define block view file name
+$block_view_twig_filename = "{$class_name_to_filename}.twig";
+
+// Check if Twig view with that name already exist
+if ( file_exists( "{$block_views_dir}/{$block_view_twig_filename}" ) ) :
+    echo "Block template file '{$block_view_twig_filename}' already exists in views/builder folder!\n";
+else:
+    // Start buffer to capture output
+    ob_start();
+
+    // Predefined content for the PHP view
+    get_template_part( 'app/console/patterns/new-block-view-twig', null, [
+        'html_class_name'   => $class_name_to_filename,
+        'block_name'        => $block_name
+    ] );
+
+    // Get the content from the buffer
+    $block_view_twig_content = ob_get_clean();
+
+    // Write content to the file in the views builder directory
+    file_put_contents( "{$block_views_dir}/{$block_view_twig_filename}", $block_view_twig_content );
+
+    // Output success message
+    echo "Block template file '{$block_view_twig_filename}' created successfully in views/builder folder!\n";
+endif;

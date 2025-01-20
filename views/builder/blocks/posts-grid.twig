@@ -1,0 +1,66 @@
+    <div class="posts-grid-block" {{ block_details.enable_filters ? 'uk-filter="target: .js-filter"' : '' }}>
+        <div class="uk-container">
+            {# Filters #}
+            {% if block_details.enable_filters and block_details.posts_query.have_posts() and block_details.categories is not null %}
+                <div class="posts-filter uk-margin-large-bottom">
+                    <div class="uk-container">
+                        <div class="uk-position-relative" tabindex="-1" uk-slider="active: first; finite: true;">
+                            <ul class="uk-slider-items uk-subnav uk-subnav-pill uk-flex-nowrap uk-flex-center uk-margin-remove">
+                                <li class="uk-active" uk-filter-control><a href="#">All</a></li>
+
+                                {# Loop throug filters #}
+                                {% for key, value in block_details.filters %}
+                                    <li uk-filter-control=".tag-{{ key }}"><a href="#">{{ value }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+            {# Title and subtitle #}
+            {% include 'builder/partials/block-titles.twig' with { 'block_global_settings': block_global_settings } %}
+
+            {# Content #}
+            {% if block_details.content != '' %}
+                <div class="uk-margin-top">{{ block_details.content | raw }}</div>
+            {% endif %}
+
+            {# CTA button #}
+            {% if block_global_settings.have_cta %}
+                <div class="uk-child-width-auto@s uk-flex-center uk-margin-medium-top uk-grid-small" uk-grid>
+                    {{ get_ctas( block_global_settings.have_cta ) }}
+                </div>
+            {% endif %}
+
+            {# Posts #}
+            {% if block_details.posts_query.have_posts() %}
+                <div id="posts-grid" class="js-filter uk-child-width-1-4@m uk-child-width-1-2@s" uk-grid>
+                    {% for post in block_details.posts_query.posts %}
+                        {% include 'builder/partials/article-box.twig' with {
+                            post            : post,
+                            taxonomy        : block_details.taxonomy,
+                            categories      : block_details.categories,
+                            thumbnail_size  : 'full'
+                        } %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {# Load more button #}
+            <div class="uk-child-width-auto@s uk-flex-center uk-margin-large-top uk-grid-small" uk-grid>
+                {% include 'template-parts/cta-button.twig' with {
+                    'cta_label'             : 'Load more news',
+                    'cta_url'               : 'javascript:void(0);',
+                    'cta_style'             : 'primary',
+                    'additional_classes'    : 'js-loadmore',
+                    'additional_attributes' : '',
+                    'new_tab'               : false
+                } %}
+            </div>
+            
+            <input type="hidden" id="paged" value="1">
+            <input type="hidden" id="max_pages" value="{{ block_details.posts_query.max_num_pages }}">
+        </div>
+    </div>
+</section> <!-- Posts Grid block end -->

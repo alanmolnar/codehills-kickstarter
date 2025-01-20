@@ -15,10 +15,7 @@ use CodehillsKickstarter\Core\Builder;
 use CodehillsKickstarter\Core\ThemeFunctions;
 
 // Prevent direct access to this file from url
-defined( 'WPINC' ) || exit;
-
-// Block global settings
-$block_global_settings = Builder::get_block_global_settings( $args['page_id'] ); ?>
+defined( 'WPINC' ) || exit; ?>
 
 <!-- Builder notification
 ============================================ -->
@@ -27,7 +24,7 @@ $block_global_settings = Builder::get_block_global_settings( $args['page_id'] );
         <?php
             // Title and subtitle
             get_template_part( 'views/builder/partials/block-titles', null, array(
-                'block_global_settings' => $block_global_settings
+                'block_global_settings' => $args['block_global_settings']
             ) );
         ?>
 

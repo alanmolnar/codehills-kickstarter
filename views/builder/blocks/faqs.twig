@@ -1,0 +1,45 @@
+    <div class="faq-block" {{ block_details.enable_filters ? 'uk-filter="target: .js-filter"' : '' }}>
+        {% if block_details.enable_filters and block_details.faqs is not empty %}
+            <div class="faqs-filter uk-margin-large-bottom">
+                <div class="uk-container">
+                    <ul class="uk-subnav uk-subnav-pill uk-flex uk-flex-center uk-margin-remove">
+                        <li class="uk-active" uk-filter-control><a href="#">All</a></li>
+
+                        {# Loop through the filters #}
+                        {% if block_details.filters is iterable %}
+                            {% for key, value in block_details.filters %}
+                                <li uk-filter-control=".tag-{{ key }}"><a href="#">{{ value }}</a></li>
+                            {% endfor %}
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="uk-container">
+            {# Title and subtitle #}
+            {% include 'builder/partials/block-titles.twig' with { 'block_global_settings': block_global_settings } %}
+
+            {# Content #}
+            {% if block_details.content != '' %}
+                <div class="uk-margin-top">{{ block_details.content | raw }}</div>
+            {% endif %}
+
+            {# CTA button #}
+            {% if block_global_settings.have_cta %}
+                <div class="uk-child-width-auto@s uk-flex-center uk-margin-medium-top uk-grid-small" uk-grid>
+                    {{ get_ctas( block_global_settings.have_cta ) }}
+                </div>
+            {% endif %}
+
+            {# FAQs #}
+            {% if block_details.faqs is not empty %}
+                <ul class="{{ block_details.enable_filters ? 'js-filter' : '' }} uk-margin-medium-top uk-margin-remove-bottom" uk-accordion="active: 0">
+                    {% for faq in block_details.faqs %}
+                        {% include 'builder/partials/faq-row.twig' with { 'faq': faq } %}
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+</section> <!-- FAQs block end -->

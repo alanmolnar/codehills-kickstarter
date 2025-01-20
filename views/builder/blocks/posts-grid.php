@@ -36,21 +36,9 @@ $block_details = $args['block_details']; ?>
                                     <li class="uk-active" uk-filter-control><a href="#">All</a></li>
 
                                     <?php
-                                        // Get empty array for filters
-                                        $filters = array();
-
-                                        // Loop through categories
-                                        foreach( $block_details->categories as $category ) :
-                                            // Add category to filters
-                                            $filters[][$category->slug] = $category->name;
-                                        endforeach;
-
-                                        // Remove duplicates from associated array
-                                        $filters = array_unique( $filters, SORT_REGULAR );
-
                                         // Loop through filters
-                                        foreach( $filters as $filter ) :
-                                            echo '<li uk-filter-control=".tag-' . key( $filter ) . '"><a href="#">' . current( $filter ) . '</a></li>';
+                                        foreach( $block_details->filters as $key => $value ) :
+                                            echo '<li uk-filter-control=".tag-' . $key . '"><a href="#">' . $value . '</a></li>';
                                         endforeach;
                                     ?>
                                 </ul>
@@ -81,7 +69,7 @@ $block_details = $args['block_details']; ?>
 
                 // Posts
                 if( $block_details->posts_query->have_posts() ) :
-                    echo '<div id="posts-grid" class="js-filter" uk-grid>';
+                    echo '<div id="posts-grid" class="js-filter uk-child-width-1-4@m uk-child-width-1-2@s" uk-grid>';
 
                     while( $block_details->posts_query->have_posts() ) : $block_details->posts_query->the_post();
                         // Get template part

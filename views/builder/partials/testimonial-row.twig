@@ -1,0 +1,27 @@
+<div>
+    {# Content #}
+    {% if testimonial.content is defined and testimonial.content != '' %}
+        <div class="customer-testimonial-content uk-margin-bottom">{{ testimonial.content | raw }}</div>
+    {% endif %}
+    
+    <div class="uk-grid-small" uk-grid>
+        {# Image #}
+        {% if testimonial.image is defined %}
+            <div class="uk-width-auto">
+                <img class="transition uk-border-circle" src="{{ testimonial.image.url }}" width="64" height="64" alt="{{ testimonial.name }}">
+            </div>
+        {% endif %}
+        
+        <div class="uk-width-expand">
+            {# Name #}
+            {% if testimonial.name is defined and testimonial.name != '' %}
+                <div class="customer-testimonial-name">{{ testimonial.name }}</div>
+            {% endif %}
+            
+            {# Title #}
+            {% if testimonial.title is defined and testimonial.title != '' %}
+                <div class="customer-testimonial-title">{{ testimonial.title }}</div>
+            {% endif %}
+        </div>
+    </div>
+</div>

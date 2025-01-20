@@ -1,0 +1,10 @@
+{% set templates = [
+    'template-parts/header.twig',
+    'template-parts/main-loop.twig',
+    'template-parts/footer.twig'
+] %}
+
+{# Loop the templates #}
+{% for template in templates %}
+    {% include template %}
+{% endfor %}

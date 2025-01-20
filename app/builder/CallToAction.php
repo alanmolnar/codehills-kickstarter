@@ -13,8 +13,10 @@
 
 namespace CodehillsKickstarter\Builder;
 
+use CodehillsKickstarter\Core\Twig;
 use CodehillsKickstarter\Core\Builder;
 use CodehillsKickstarter\Helpers\Helpers;
+use CodehillsKickstarter\Core\ThemeFunctions;
 
 class CallToAction extends Builder
 {    
@@ -79,11 +81,41 @@ class CallToAction extends Builder
             'hash'              => $hash
         ] );
 
-        // Render the block
-        get_template_part( 'views/builder/blocks/' . self::$filename, null, array(
+        $block_style = '<style>';
+
+        // Block inline style for background image
+        if( $image_mobile ) :
+            $block_style .= '.call-to-action-block-' . $hash . ' {
+                background-image: url(' . $image_mobile['url'] . ');
+            }';
+        endif;
+
+        // Block inline style for background image on desktop
+        if( $image_desktop ) :
+            $block_style .= '@media screen and (min-width: 960px) {
+                .call-to-action-block-' . $hash . ' {
+                    background-image: url(' . $image_desktop['url'] . ');
+                }
+            }';
+        endif;
+
+        $block_style .= '</style>';
+
+        // Block data
+        $data = array(
             'page_id'               => $page_id,
             'block_global_settings' => $block_global_settings,
-            'block_details'         => $block_details
-        ) );
+            'block_details'         => $block_details,
+            'block_style'           => $block_style
+        );
+
+        // Render the block
+        if( ThemeFunctions::twig_enabled() ) :
+            // Twig template
+            Twig::render( 'builder/blocks/' . self::$filename . '.twig', $data );
+        else:
+            // PHP template
+            get_template_part( 'views/builder/blocks/' . self::$filename, null, $data );
+        endif;
     }
 }

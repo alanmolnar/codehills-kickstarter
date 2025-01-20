@@ -68,7 +68,7 @@ $block_details = $args['block_details']; ?>
                     echo '<div class="uk-child-width-auto@m uk-margin-medium-top uk-grid-small" uk-grid>';
 
                     // Loop through CTAs
-                    Builder::get_dishd_ctas( $block_global_settings->have_cta );
+                    Builder::get_ctas( $block_global_settings->have_cta );
 
                     echo '</div>';
                 endif;

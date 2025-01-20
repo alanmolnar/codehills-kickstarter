@@ -12,13 +12,7 @@
  */
 
 // Prevent direct access to this file from url
-defined( 'WPINC' ) || exit;
-
-// Get the post title
-$title = esc_attr( get_the_title() );
-
-// Grab the url for the featured image
-$featured_image_url = get_the_post_thumbnail_url( get_the_ID(), 'full' ); ?>
+defined( 'WPINC' ) || exit; ?>
 
 <!-- Article
 ============================================= -->
@@ -28,19 +22,19 @@ $featured_image_url = get_the_post_thumbnail_url( get_the_ID(), 'full' ); ?>
             <div class="article-featured-image'">
                 <?php
                     // Featured image
-                    if ( $featured_image_url != '' ) :
+                    if ( $args['featured_image_url'] != '' ) :
                         echo '<div class="article-featured-image">
-                            <img src="' . esc_url( $featured_image_url ) . '" alt="' . $title . '">
+                            <img src="' . esc_url( $args['featured_image_url'] ) . '" alt="' . $args['title'] . '">
                         </div>';
                     endif;
                 ?>
             </div>
 
-            <h1><?php echo $title; ?></h1>
+            <h1><?php echo $args['title']; ?></h1>
 
             <?php
-                // Excerpt
-                the_content();
+                // Content
+                echo $args['content'];
             ?>
         </div>
     </div>

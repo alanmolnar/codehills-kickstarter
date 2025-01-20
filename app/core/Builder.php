@@ -13,7 +13,10 @@
 
 namespace CodehillsKickstarter\Core;
 
+use CodehillsKickstarter\Core\Twig;
+use CodehillsKickstarter\Core\ThemeFunctions;
 use CodehillsKickstarter\Builder\WordPressContent;
+
 
 // Prevent direct access to this file from url
 defined( 'WPINC' ) || exit;
@@ -89,41 +92,50 @@ class Builder {
     }
 
     /**
-     * Page builder render
-     * 
-     * Render page builder blocks
+     * Page builder block main
      * 
      * @since 2.0.0
      * @access public
      * @param int $page_id The page ID
      * @return void
      */
-    public static function page_builder_render( $page_id )
+    public static function page_builder( $page_id )
     {
-        // Loop through blocks.
-        while ( have_rows( 'page_builder', $page_id ) ) : the_row();
-            // Convert block identifier from get_row_layout() to the class name that don't contain spaces or underscore, first letter is uppercase
-            $block_class_name = str_replace( ' ', '', ucwords( str_replace( '_', ' ', get_row_layout() ) ) );
+        // Get the post/page title
+        $title = esc_attr( get_the_title() );
 
-            // If block class name have 'Wordpress' in it, replace it with 'WordPress'
-            $block_class_name = self::$namespace_prefix . str_replace( 'Wordpress', 'WordPress', $block_class_name );
+        // Check value exists.
+        if( have_rows( 'page_builder' ) ) :
+            echo '<section id="page-builder" class="uk-padding-remove">';
+                // Render page builder blocks
+                self::page_builder_render(  $page_id );
+            echo '</section> <!-- #wrapper end -->';
+        elseif ( ! empty( get_the_content() ) ) :
+            // Get the data
+            $data = array(
+                'title'                 => $title,
+                'content'               => apply_filters( 'the_content', get_the_content() ),
+                'featured_image_url'    => get_the_post_thumbnail_url( get_the_ID(), 'full' )
+            );
 
-            // Check if block is disabled
-            $block_disabled = get_sub_field('disable_block');
-
-            // Check if class exists
-            if ( class_exists( $block_class_name ) ) :
-                // Render block if it's not disabled
-                if ( ! $block_disabled ) :
-                    $block_class_name::render();
-                endif;
+            // Article content
+            if( ThemeFunctions::twig_enabled() ) :
+                // Twig template
+                Twig::render( 'template-parts/article-content.twig', $data );
             else:
-                // Block notification
-                get_template_part( 'views/template-parts/block-notification', null, array(
-                    'page_id' => $page_id
-                ) );
+                // PHP template
+                get_template_part( 'views/template-parts/article-content', null, $data );
             endif;
-        endwhile;
+        else:
+            // Builder notification
+            if( ThemeFunctions::twig_enabled() ) :
+                // Twig template
+                Twig::render( 'template-parts/builder-notification.twig', array( 'title' => $title ) );
+            else:
+                // PHP template
+                get_template_part( 'views/template-parts/builder-notification', null, array( 'title' => $title ) );
+            endif;
+        endif;
     }
 
     /**
@@ -223,27 +235,73 @@ class Builder {
     }
 
     /**
-     * Page builder block main
+     * Page builder render
+     * 
+     * Render page builder blocks
      * 
      * @since 2.0.0
      * @access public
      * @param int $page_id The page ID
      * @return void
      */
-    public static function page_builder( $page_id )
+    public static function page_builder_render( $page_id )
     {
-        // Check value exists.
-        if( have_rows( 'page_builder' ) ) :
-            echo '<section id="page-builder" class="uk-padding-remove">';
-                // Render page builder blocks
-                Builder::page_builder_render(  $page_id  );
-            echo '</section> <!-- #wrapper end -->';
-        elseif ( ! empty( get_the_content() ) ) : 
-            // Article content
-            get_template_part( 'views/template-parts/article-content' );
+        // Loop through blocks.
+        while ( have_rows( 'page_builder', $page_id ) ) : the_row();
+            // Convert block identifier from get_row_layout() to the class name that don't contain spaces or underscore, first letter is uppercase
+            $block_class_name = str_replace( ' ', '', ucwords( str_replace( '_', ' ', get_row_layout() ) ) );
+
+            // If block class name have 'Wordpress' in it, replace it with 'WordPress'
+            $block_class_name = self::$namespace_prefix . str_replace( 'Wordpress', 'WordPress', $block_class_name );
+
+            // Check if block is disabled
+            $block_disabled = get_sub_field('disable_block');
+
+            // Check if class exists
+            if ( class_exists( $block_class_name ) ) :
+                // Render block if it's not disabled
+                if ( ! $block_disabled ) :
+                    $block_class_name::render();
+                endif;
+            else:
+                // Get block global settings
+                $block_global_settings = self::get_block_global_settings( $page_id );
+
+                // Block notification
+                if( ThemeFunctions::twig_enabled() ) :
+                    // Twig template
+                    Twig::render( 'template-parts/block-notification.twig', array(
+                        'block_global_settings' => $block_global_settings
+                    ) );
+                else:
+                    // PHP template
+                    get_template_part( 'views/template-parts/block-notification', null, array(
+                        'block_global_settings' => $block_global_settings
+                    ) );
+                endif;
+            endif;
+        endwhile;
+    }
+
+    /**
+     * Render page builder block
+     * 
+     * Render proper page builder block, Twig or PHP
+     * 
+     * @since 2.1.0
+     * @access public
+     * @param string $filename The block filename
+     * @param array $data The block data
+     */
+    public static function render_block( $filename, $data )
+    {
+        // Render the block
+        if( ThemeFunctions::twig_enabled() ) :
+            // Twig template
+            Twig::render( 'builder/blocks/' . $filename . '.twig', $data );
         else:
-            // Builder notification
-            get_template_part( 'views/template-parts/builder-notification' );
+            // PHP template
+            get_template_part( 'views/builder/blocks/' . $filename, null, $data );
         endif;
     }
 
@@ -307,36 +365,25 @@ class Builder {
         if( $ctas != null ) :
             // Loop through manually called CTAs
             foreach ( $ctas as $cta ) :
-                // CTA button
-                get_template_part( 'views/template-parts/cta-button', null, array(
+                // CTA button data
+                $data = array(
                     'cta_label'             => $cta['label'],
                     'cta_url'               => $cta['url'],
                     'cta_style'             => $cta['style'],
                     'additional_classes'    => $cta['additional_classes'],
                     'additional_attributes' => $cta['additional_attributes'],
                     'new_tab'               => $cta['new_tab']
-                ) );
-            endforeach;
-        else:
-            // Loop through CTAs repeater
-            while( have_rows( 'block_ctas' ) ) : the_row();
-                $cta_label              = get_sub_field( 'label' );
-                $cta_url                = get_sub_field( 'url' );
-                $cta_style              = get_sub_field( 'style' ) ? get_sub_field( 'style' ) : 'uk-button-primary';
-                $additional_classes     = get_sub_field( 'additional_classes' );
-                $additional_attributes  = get_sub_field( 'additional_attributes' );
-                $new_tab                = get_sub_field( 'new_tab' );
+                );
 
                 // CTA button
-                get_template_part( 'views/template-parts/cta-button', null, array(
-                    'cta_label'             => $cta_label,
-                    'cta_url'               => $cta_url,
-                    'cta_style'             => $cta_style,
-                    'additional_classes'    => $additional_classes,
-                    'additional_attributes' => $additional_attributes,
-                    'new_tab'               => $new_tab
-                ) );
-            endwhile;
+                if( ThemeFunctions::twig_enabled() ) :
+                    // Twig template
+                    Twig::render( 'template-parts/cta-button.twig', $data );
+                else:
+                    // PHP template
+                    get_template_part( 'views/template-parts/cta-button', null, $data );
+                endif;
+            endforeach;
         endif;
     }
 

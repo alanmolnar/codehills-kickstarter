@@ -14,6 +14,7 @@
 namespace CodehillsKickstarter\Builder;
 
 use WP_Query;
+use CodehillsKickstarter\Core\Twig;
 use CodehillsKickstarter\Core\Builder;
 use CodehillsKickstarter\Helpers\Helpers;
 
@@ -83,12 +84,30 @@ class PostsGrid extends Builder
                 'hide_empty' => true
             ) );
         endif;
+
+        // Filters
+        if( $taxonomy != null && $enable_filters && $posts_query->have_posts() ? $categories : null ) :
+            // Get empty array for filters
+            $filters = array();
+
+            // Loop through categories
+            foreach( $categories as $category ) :
+                // Add category to filters
+                $filters[$category->slug] = $category->name;
+            endforeach;
+
+            // Remove duplicates from associated array
+            $filters = array_unique( $filters, SORT_REGULAR );
+        else:
+            $filters = null;
+        endif;
         
         // Set block details
         $block_details = Helpers::collect( [
             'post_type'         => $post_type,
             'taxonomy'          => $taxonomy,
             'enable_filters'    => $enable_filters,
+            'filters'           => $filters,
             'content'           => $content,
             'posts_query'       => $posts_query,
             'categories'        => $taxonomy != null && $enable_filters && $posts_query->have_posts() ? $categories : null
@@ -97,11 +116,14 @@ class PostsGrid extends Builder
         // Reset the post data
         wp_reset_postdata();
 
-        // Render the block
-        get_template_part( 'views/builder/blocks/' . self::$filename, null, array(
+        // Block data
+        $data = array(
             'page_id'               => $page_id,
             'block_global_settings' => $block_global_settings,
             'block_details'         => $block_details
-        ) );
+        );
+
+        // Render the block
+        Builder::render_block( self::$filename, $data );
     }
 }

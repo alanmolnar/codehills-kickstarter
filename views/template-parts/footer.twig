@@ -1,0 +1,26 @@
+        <!-- Footer
+        ============================================= -->
+        <footer>
+            <div class="uk-container">
+                <h4>{{ __('Footer Nav', theme_text_domain) }}</h4>
+
+                {# Footer navigation #}
+                {% if has_nav_menu( 'footer_nav' ) %}
+                    {{ wp_nav_menu({
+                        'theme_location'    : 'footer_nav',
+                        'container'         : false,
+                        'items_wrap'        : '<ul class="uk-nav uk-margin-top">%3$s</ul>',
+                        'depth'             : 1
+                    }) }}
+                {% endif %}
+                
+                <h4>{{ __('Connect', theme_text_domain) }}</h4>
+                
+                {# Social links #}
+                {% include 'template-parts/social-links.twig' %}
+            </div>
+        </footer> <!-- Footer end -->
+
+        {{ wp_footer() }}
+    </body>
+</html>
