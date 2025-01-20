@@ -40,7 +40,7 @@ You have successfully cloned the repository to your local machine. You can now n
 
 # Changelog
 
-## 2.0.1
+## 2.0.1 - Dec 17th, 2024
 - Added two new commands for creating custom post type and taxonomy
 - Updated CustomPostTypes controller, to control only custom post types, taxonomies moved to the new controller
 - Added Taxonomies controller
@@ -61,3 +61,7 @@ You have successfully cloned the repository to your local machine. You can now n
 - Social links template part created and footer.php updated
 - Added two commands to the console.sh
 - Updated Block Global Settings JSON with allow_null = 1 for title and subtitle tag and style dropdowns
+
+## 2.1.0 - Jan 20th, 2025
+- Twig templating system added
+- WordPress template hierarchy customized, selection between Twig and PHP templating system added
