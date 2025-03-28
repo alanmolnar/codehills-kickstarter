@@ -40,6 +40,10 @@ You have successfully cloned the repository to your local machine. You can now n
 
 # Changelog
 
+## 2.1.2 - Mar 28th, 2025
+- Added 'light/dark' mode for block to the Builder class
+- Subfolder names in /app/ folder fixed, capitalized
+
 ## 2.1.1 - Jan 20th, 2025
 - Updated template selector for archive page, to include all kind of post types and WooCommerce
 - Updated ACF group 'Page Builder', added 'Block Elements Switcher' clone fields to the FAQ and Testimonial flexible layout
