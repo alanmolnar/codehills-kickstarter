@@ -155,6 +155,7 @@ class Builder {
         $block_id                           = get_sub_field( 'block_id', $page_id );
         $block_class                        = get_sub_field( 'block_class', $page_id );
         $block_sticky                       = get_sub_field( 'block_sticky', $page_id );
+        $block_style                        = get_sub_field( 'block_style', $page_id );
         $block_mobile_spacing               = get_sub_field( 'block_mobile_spacing', $page_id );
         $block_tablet_spacing               = get_sub_field( 'block_tablet_spacing', $page_id );
         $block_desktop_spacing              = get_sub_field( 'block_desktop_spacing', $page_id );
@@ -218,7 +219,7 @@ class Builder {
         <section
             <?php
                 echo ( $block_id != '' ? 'id="' . $block_id . '"' : '');
-                echo ( $block_class != '' ? 'class="uk-position-relative uk-section block-id-' . $random_hex . ' ' . $block_class . '"' : 'class="uk-position-relative uk-section block-id-' . $random_hex . '"');
+                echo 'class="uk-position-relative uk-section uk-' . $block_style . ' block-id-' . $random_hex . ( $block_class != '' ?  ' ' . $block_class : '') . '"';
                 echo ( $block_sticky ? ' uk-sticky' : '');
                 echo '>';
 
