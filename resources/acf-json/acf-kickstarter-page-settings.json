@@ -20,7 +20,7 @@
                 "light": "Light",
                 "dark": "Dark"
             },
-            "default_value": "light",
+            "default_value": "dark",
             "return_format": "value",
             "allow_null": 0,
             "other_choice": 0,
@@ -46,7 +46,7 @@
                 "absolute": "Absolute",
                 "relative": "Relative"
             },
-            "default_value": "absolute",
+            "default_value": "relative",
             "return_format": "value",
             "allow_null": 0,
             "other_choice": 0,
@@ -68,7 +68,7 @@
                 "class": "",
                 "id": ""
             },
-            "default_value": "#f9f9f9",
+            "default_value": "",
             "enable_opacity": 0,
             "return_format": "string",
             "allow_in_bindings": 0

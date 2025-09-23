@@ -1,0 +1,57 @@
+    <div class="posts-grid-block" {{ block_details.enable_filters ? 'uk-filter="target: .js-filter"' : '' }}>
+        <div class="uk-container">
+            {# Title / content grid #}
+            {% include 'builder/partials/twig/title-content-grid.twig' %}
+
+            {# Filters #}
+            {% if block_details.enable_filters and block_details.posts_query.have_posts() and block_details.categories is not null %}
+                <div class="posts-filter uk-margin-large-top uk-margin-medium-bottom">
+                    <div class="uk-container">
+                        <div class="uk-position-relative" tabindex="-1" uk-slider="active: first; finite: true;">
+                            <ul class="uk-slider-items uk-subnav uk-subnav-pill uk-flex-nowrap uk-margin-remove">
+                                {# Loop throug filters #}
+                                {% for key, value in block_details.filters %}
+                                    <li uk-filter-control=".tag-{{ key }}"><a href="#">{{ value | raw }}</a></li>
+                                {% endfor %}
+
+                                <li class="uk-active" uk-filter-control><a href="#">All</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+            {# Posts #}
+            {% if block_details.posts_query.posts is not empty %}
+                <div id="posts-grid" class="js-filter uk-child-width-1-{{ block_details.columns }}@m uk-child-width-1-2@s uk-grid-match uk-grid-small uk-margin-large-top" uk-grid>
+                    {% for post in block_details.posts_query.posts %}
+                        {% set filters = '' %}
+
+                        {# Create class from post terms #}
+                        {% if post.post_terms is not empty %}
+                            {% for key, term in post.post_terms %}
+                                {% set filters = filters ~ ' tag-' ~ key %}
+                            {% endfor %}
+                        {% endif %}
+
+                        <div class="{{ filters }}">
+                            {# Include post box #}
+                            {% include 'builder/partials/twig/' ~ block_details.post_type ~ '-' ~ block_details.post_box_style ~ '-box.twig' with {
+                                post        : post,
+                                taxonomy    : block_details.taxonomy,
+                                categories  : block_details.categories
+                            } %}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {# CTA button #}
+            {% if block_global_settings.have_cta %}
+                <div class="uk-child-width-auto@s uk-flex-center uk-margin-medium-top uk-grid-small" uk-grid>
+                    {{ get_ctas( block_global_settings.have_cta ) }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section> <!-- Posts Grid block end -->

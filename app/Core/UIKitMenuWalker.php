@@ -30,6 +30,7 @@ class UIKitMenuWalker extends Walker {
 	 * @var array
 	 */
 	public $db_fields = array( 'parent' => 'menu_item_parent', 'id' => 'db_id' );
+
 	/**
 	 * Starts the list before the elements are added.
 	 *
@@ -45,13 +46,15 @@ class UIKitMenuWalker extends Walker {
 	// Custom parameter is_offcanvas
 	private $is_offcanvas;
 
-    public function __construct( $is_offcanvas = false ) {
+    public function __construct( $is_offcanvas = false )
+	{
         $this->is_offcanvas = $is_offcanvas;
     }
     
     private $curItem;
     
-	public function start_lvl( &$output, $depth = 0, $args = array() ) {
+	public function start_lvl( &$output, $depth = 0, $args = array() )
+	{
 		$indent = str_repeat("\t", $depth);
 		$title = $this->curItem;
 
@@ -63,6 +66,7 @@ class UIKitMenuWalker extends Walker {
 			$output .= "\n$indent<div uk-dropdown=\"pos: right-top\"><ul class=\"uk-nav uk-navbar-dropdown-nav\">\n";
 		}
 	}
+
 	/**
 	 * Ends the list of after the elements are added.
 	 *
@@ -74,7 +78,8 @@ class UIKitMenuWalker extends Walker {
 	 * @param int    $depth  Depth of menu item. Used for padding.
 	 * @param array  $args   An array of arguments. @see wp_nav_menu()
 	 */
-	public function end_lvl( &$output, $depth = 0, $args = array() ) {
+	public function end_lvl( &$output, $depth = 0, $args = array() )
+	{
 		$indent = str_repeat("\t", $depth);
 		$output .= "$indent</ul></div>\n";
 	}
@@ -93,7 +98,8 @@ class UIKitMenuWalker extends Walker {
 	 * @param array  $args   An array of arguments. @see wp_nav_menu()
 	 * @param int    $id     Current item ID.
 	 */
-	public function start_el( &$output, $item, $depth = 0, $args = array(), $id = 0 ) {
+	public function start_el( &$output, $item, $depth = 0, $args = array(), $id = 0 )
+	{
         $this->curItem = $item;
 		$indent = ( $depth ) ? str_repeat( "\t", $depth ) : '';
 		$classes = empty( $item->classes ) ? array() : (array) $item->classes;
@@ -229,6 +235,7 @@ class UIKitMenuWalker extends Walker {
 		 */
 		$output .= apply_filters( 'walker_nav_menu_start_el', $item_output, $item, $depth, $args );
 	}
+
 	/**
 	 * Ends the element output, if needed.
 	 *
@@ -241,14 +248,31 @@ class UIKitMenuWalker extends Walker {
 	 * @param int    $depth  Depth of page. Not Used.
 	 * @param array  $args   An array of arguments. @see wp_nav_menu()
 	 */
-	public function end_el( &$output, $item, $depth = 0, $args = array() ) {
+	public function end_el( &$output, $item, $depth = 0, $args = array() )
+	{
 		$output .= '</li>';
 	}
     
-    function display_element ($element, &$children_elements, $max_depth, $depth = 0, $args, &$output) {
+    /**
+     * Display element.
+     * 
+     * This method is overridden to set the hasChildren property for each menu item.
+     * 
+     * @since 2.0.0
+     * @param object $element The menu item object.
+     * @param array $children_elements An array of child elements.
+     * @param int $max_depth The maximum depth of the menu.
+     * @param int $depth The current depth of the menu item.
+     * @param array $args An array of arguments passed to the menu.
+     * @param string &$output The output string that will be used to generate the menu HTML.
+     * @return bool Returns true to continue with the normal behavior of the parent method.
+     */
+    public function display_element( $element, &$children_elements, $max_depth, $depth, $args, &$output )
+	{
         // check whether this item has children, and set $item->hasChildren accordingly
-        $element->hasChildren = isset($children_elements[$element->ID]) && !empty($children_elements[$element->ID]);
+        $element->hasChildren = isset( $children_elements[$element->ID] ) && ! empty( $children_elements[$element->ID] );
+
         // continue with normal behavior
-        return parent::display_element($element, $children_elements, $max_depth, $depth, $args, $output);
-    } 
+        return parent::display_element( $element, $children_elements, $max_depth, $depth, $args, $output );
+    }
 }

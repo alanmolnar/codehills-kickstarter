@@ -1,0 +1,43 @@
+<article class="post-single-box uk-position-relative {{ filters }}">
+    {# Featured image #}    
+    {% if post.featured_image_url is not empty %}
+        <div class="product-single-box-image">
+            <a href="{{ post.permalink | e }}">
+                <img src="{{ post.featured_image_url | e }}" width="640" height="360" alt="{{ post.title | e }}">
+            </a>
+        </div>
+    {% endif %}
+
+    <div class="post-single-box-details">
+        {# Categories #}
+        {% if post.post_terms is not empty %}
+            <div class="post-terms-list uk-flex">
+                {% for term in post.post_terms %}
+                    <a href="{{ term.permalink }}">{{ term.name }}</a>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="post-single-box-content">
+            <h3>
+                <a href="{{ post.permalink | e }}">
+                    {{ post.post_title }}
+                </a>
+            </h3>
+
+            <div class="post-single-box-excerpt uk-margin-small-top">
+                {{ post.post_excerpt is not empty ? post.post_excerpt : post.post_content | striptags[:120] ~ '...' }}
+            </div>
+        </div>
+
+        <div class="post-meta uk-flex-between uk-margin-top" uk-grid>
+            <div class="uk-width-expand">
+                <p class="post-date">{{ post.post_date | date('F j, Y') }}</p>
+            </div>
+
+            <div class="uk-width-auto">
+                <p class="post-date">{{ post.reading_time }}</p>
+            </div>
+        </div>
+    </div>
+</article>

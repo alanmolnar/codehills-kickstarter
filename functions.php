@@ -78,9 +78,6 @@ if ( ! function_exists( 'codehills_theme_setup' ) ) :
         // Require the autoloader
         require_once get_template_directory() . '/vendor/autoload.php';
 
-        // Call TGM Plugin Activation
-        require_once get_template_directory() . '/includes/libs/tgm-plugin/class-tgm-plugin-activation.php';
-
         // Instantiate ThemeSetup class
         $theme_setup = new ThemeSetup();
 
@@ -271,7 +268,7 @@ if ( ! function_exists( 'codehills_custom_template_loader' ) ) :
             // Get the template hierarchy
             $hierarchy = codehills_get_template_hierarchy();
 
-            foreach ($hierarchy as $template_name) :
+            foreach( $hierarchy as $template_name ) :
                 // Check if Twig is enabled and the Twig template exists
                 if( ThemeFunctions::twig_enabled() && file_exists( $twig_template_dir . '/' . $template_name . '.twig' ) ) :
                     return Twig::load_twig_template( $twig_template_dir . '/' . $template_name . '.twig' );

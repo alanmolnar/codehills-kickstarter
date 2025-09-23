@@ -12,4 +12,4 @@
 defined( 'WPINC' ) || exit;
 
 // Get header template part
-get_template_part( 'views/template-parts/header' );
+get_template_part( 'views/template-parts/php/header' );

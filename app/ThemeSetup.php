@@ -57,7 +57,8 @@ class ThemeSetup {
      *
      * @return ThemeSetup An instance of the class.
      */
-    public static function instance() {
+    public static function instance()
+    {
         if ( is_null( self::$instance ) ) :
             self::$instance = new self();
         endif;
@@ -102,7 +103,8 @@ class ThemeSetup {
      * @param string $path The path to the ACF JSON save point
      * @return string The path to the ACF JSON save point
      */
-    public function theme_acf_json_save_point( $path ) {
+    public function theme_acf_json_save_point( $path )
+    {
         return get_stylesheet_directory() . '/resources/acf-json';
     }
 
@@ -114,7 +116,8 @@ class ThemeSetup {
      * @param array $paths The paths to the ACF JSON load points
      * @return array The paths to the ACF JSON load points
      */
-    public function theme_acf_json_load_point( $paths ) {
+    public function theme_acf_json_load_point( $paths )
+    {
         // Remove the original path (optional).
         unset( $paths[0] );
     
@@ -130,7 +133,8 @@ class ThemeSetup {
      * @since 1.2.2
      * @access public
      */
-    public function init() {
+    public function init()
+    {
         // Initialize homepage and remove sample page
         $this->initialize_homepage();
 
@@ -175,8 +179,24 @@ class ThemeSetup {
      */
     public function initialize_homepage()
     {
-        // Check if homepage exists, check meta key 'kickstarter_home'
-        $homepage = get_page_by_title( 'Kickstarter Home' );
+        // Reset the homepage variable
+        $homepage = null;
+
+        // Query for the homepage by title
+        $query = new \WP_Query( array(
+            'post_type'      => 'page',
+            'post_status'    => 'any',
+            'title'          => 'Kickstarter Home',
+            'posts_per_page' => 1,
+        ) );
+
+        // If homepage exists, set it
+        if ( $query->have_posts() ) {
+            $homepage = $query->posts[0];
+        }
+
+        // Reset post data
+        wp_reset_postdata();
 
         // If homepage doesn't exist, create it
         if ( ! $homepage ) :
@@ -208,13 +228,24 @@ class ThemeSetup {
             endif;
         endif;
 
-        // Check if 'Sample Page' exists
-        $sample_page = get_page_by_title('Sample Page');
+        // Reset the sample page variable
+        $sample_page = null;
+
+        // Query for the homepage by title
+        $query = new \WP_Query( array(
+            'post_type'      => 'page',
+            'post_status'    => 'any',
+            'title'          => 'Sample Page',
+            'posts_per_page' => 1,
+        ) );
 
         // Delete 'Sample Page' if it exists
         if ( $sample_page ) :
             wp_delete_post( $sample_page->ID );
         endif;
+
+        // Reset post data
+        wp_reset_postdata();
     }
 
     /**
@@ -249,12 +280,12 @@ class ThemeSetup {
         $plugin_hello_dolly_removed_option = get_option( 'plugin_hello_dolly_removed' );
 
         // Check if Hello Dolly plugin is active
-        if ( ! $plugin_hello_dolly_removed_option && file_exists( WP_PLUGIN_DIR . '/hello-dolly/hello.php' ) ) :
+        if ( ! $plugin_hello_dolly_removed_option && file_exists( WP_PLUGIN_DIR . '/hello.php' ) ) :
             // Deactivate Hello Dolly plugin
-            deactivate_plugins( 'hello-dolly/hello.php' );
+            deactivate_plugins( 'hello.php' );
 
             // Delete Hello Dolly plugin
-            delete_plugins( array( 'hello-dolly/hello.php' ) );
+            delete_plugins( array( 'hello.php' ) );
 
             // Add option to indicate Hello Dolly plugin has been removed
             add_option( 'plugin_hello_dolly_removed', true );

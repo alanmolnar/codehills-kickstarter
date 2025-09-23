@@ -1,0 +1,10 @@
+{# Splide slider track #}
+<div class="splide__track">
+    <ul class="splide__list">
+        {% for slide in slides %}
+            <li class="splide__slide uk-width-1-1">
+                <img class="uk-border-rounded" src="{{ slide.url }}" alt="{{ slide.alt }}">
+            </li>
+        {% endfor %}
+    </ul>
+</div>

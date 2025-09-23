@@ -1,0 +1,16 @@
+{% set post_url = post.permalink | url_encode %}
+{% set post_title = post.title | url_encode %}
+
+<ul class="article-share-buttons">
+    {# Instagram (no direct sharing support) #}
+    <li><a href="https://www.instagram.com/" uk-icon="icon: instagram" target="_blank" rel="noopener noreferrer"></a></li>
+
+    {# X (Twitter) #}
+    <li><a href="https://twitter.com/intent/tweet?url={{ post_url }}&text={{ post_title }}" uk-icon="icon: x" target="_blank" rel="noopener noreferrer"></a></li>
+
+    {# Facebook #}
+    <li><a href="https://www.facebook.com/sharer/sharer.php?u={{ post_url }}" uk-icon="icon: facebook" target="_blank" rel="noopener noreferrer"></a></li>
+
+    {# LinkedIn #}
+    <li><a href="https://www.linkedin.com/sharing/share-offsite/?url={{ post_url }}" uk-icon="icon: linkedin" target="_blank" rel="noopener noreferrer"></a></li>
+</ul>

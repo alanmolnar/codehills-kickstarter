@@ -1,0 +1,94 @@
+<!-- Article
+============================================= -->
+<article id="main" class="{{ post_class }}">
+    <div class="uk-container">
+        <div uk-grid>
+            <div class="article-content uk-width-2-3@m">
+                {# Article meta #}
+                {% include 'template-parts/twig/article-meta.twig' %}
+
+                <h1 class="uk-margin-small-top">{{ post.post_title }}</h1>
+
+                {% if post.image is not empty %}
+                    <img class="img-border-radius uk-margin" src="{{ post.image }}" width="844" height="400" alt="{{ post.title }}">
+                {% endif %}
+
+                {{ post.post_content | raw }}
+
+                <hr class="uk-margin">
+
+                <div class="uk-flex-between uk-flex-middle" uk-grid>
+                    {# Post categories #}
+                    {% if post.terms is not empty %}
+                        <div class="post-terms-list uk-flex uk-width-auto@s uk-margin-remove-bottom">
+                            {% for term in post.terms %}
+                                <a class="uk-label uk-label-primary uk-disabled" href="{{ term.permalink }}">{{ term.name }}</a>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    {# Article share buttons #}
+                    <div class="uk-width-auto@s">
+                        {% include 'template-parts/twig/article-share-buttons.twig' %}
+                    </div>
+                </div>
+
+                <hr class="uk-margin">
+
+                {# Posts navigation #}
+                {% if previous_post is not empty or next_post is not empty %}
+                    <div class="posts-navigation uk-child-width-1-2@s uk-grid-small uk-margin-medium-top" uk-grid>
+                        {# Previous post #}
+                        {% if previous_post is not empty %}
+                            <div>
+                                <div class="posts-navigation-item">
+                                    <div class="uk-grid-small" uk-grid>
+                                        <div class="uk-width-auto">
+                                            <a href="{{ previous_post.permalink }}" rel="prev">
+                                                <img class="img-border-radius" src="{{ previous_post.image }}" width="73" height="100" alt="{{ previous_post.title }}" style="width: 73px; height: 100px; object-fit: cover;">
+                                            </a>
+                                        </div>
+
+                                        <div class="uk-width-expand">
+                                            <span>Previous Blog</span>
+
+                                            <a class="posts-navigation-title" href="{{ previous_post.permalink }}" rel="prev">{{ previous_post.title }}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        {# Next post #}
+                        {% if next_post is not empty %}
+                            <div>
+                                <div class="posts-navigation-item">
+                                    <div class="uk-grid-small" uk-grid>
+                                        <div class="uk-width-auto">
+                                            <a href="{{ next_post.permalink }}" rel="prev">
+                                                <img class="img-border-radius" src="{{ next_post.image }}" width="73" height="100" alt="{{ next_post.title }}" style="width: 73px; height: 100px; object-fit: cover;">
+                                            </a>
+                                        </div>
+
+                                        <div class="uk-width-expand">
+                                            <span>Next Blog</span>
+
+                                            <a class="posts-navigation-title" href="{{ next_post.permalink }}" rel="prev">{{ next_post.title }}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+
+            {# Sidebar #}
+            {% if sidebar and sidebar_content is not empty %}
+                <div class="sidebar uk-width-1-3@s" uk-margin>
+                    {% include 'template-parts/twig/sidebar.twig' %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</article><!-- Article end -->

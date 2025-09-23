@@ -1,0 +1,18 @@
+{# Title / content grid #}
+<div class="uk-flex-between uk-flex-bottom" uk-grid>
+    <div class="uk-width-1-{{ ( block_details.content is not empty and block_details.content is not iterable ) or title_content is not empty ? '2' : '1' }}@m">
+        {% include 'builder/partials/twig/block-titles.twig' with { 'block_global_settings': block_global_settings } %}
+    </div>
+
+    {% if block_details.content is not empty or title_content is not empty %}
+        {% if title_content is not empty %}
+            <div class="uk-width-2-5@m">
+                {{ title_content | raw }}
+            </div>
+        {% elseif block_details.content is not iterable %}
+            <div class="uk-width-2-5@m">
+                {{ block_details.content | raw }}
+            </div>
+        {% endif %}
+    {% endif %}
+</div>

@@ -22,6 +22,7 @@ use Twig\Environment;
 use Twig\TwigFunction;
 use Twig\Loader\FilesystemLoader;
 use Twig\Extension\DebugExtension;
+use CodehillsKickstarter\Core\Widgets;
  
 // Prevent direct access to this file from url
 defined( 'WPINC' ) || exit;
@@ -49,7 +50,8 @@ class Twig {
      *
      * @return ThemeFunctions An instance of the class.
      */
-    public static function instance() {
+    public static function instance()
+    {
         if ( is_null( self::$instance ) ) :
             self::$instance = new self();
         endif;
@@ -166,7 +168,7 @@ class Twig {
             $block_global_settings = Builder::get_block_global_settings( get_the_ID() );
 
             // Twig template
-            Twig::render( 'template-parts/block-notification.twig', array(
+            Twig::render( 'template-parts/twig/block-notification.twig', array(
                 'block_global_settings' => $block_global_settings
             ) );
         endif;
@@ -198,24 +200,39 @@ class Twig {
                     'cta_two_url'   => get_field( '404_cta_two_url', 'option' ) ? get_field( '404_cta_two_url', 'option' ) : null,
                     'bg_image'      => get_field( '404_background_image', 'option' )
                 );
+
                 break;
 
             // Archive page
             case 'archive' :
                 $data = array(
-                    'title'     => get_the_archive_title(),
-                    'taxonomy'  => ! is_woocommerce() ? get_queried_object()->taxonomy : null,
-                    'posts'     => get_posts( array(
-                        'post_type' => get_post_type(),
-                        'tax_query' => ! is_woocommerce() ? array(
+                    'title'                 => single_cat_title( '', false ),
+                    'taxonomy'              => get_queried_object()->taxonomy,
+                    'category_description'  => category_description(),
+                    'taxonomy_description'  => term_description( get_queried_object()->term_id, get_queried_object()->taxonomy ),
+                    'image'                 => get_field( 'featured_image', 'term_' . get_queried_object()->term_id ),
+                    'posts'                 => get_posts( array(
+                        'post_type'      => get_post_type(),
+                        'posts_per_page' => -1,
+                        'tax_query'      => array(
                             array(
                                 'taxonomy' => get_queried_object()->taxonomy,
                                 'field'    => 'term_id',
                                 'terms'    => get_queried_object()->term_id
                             )
-                        ) : null
+                        ),
                     ) )
                 );
+
+                // Add the post permalink to the post object
+                foreach( $data['posts'] as $post ) :
+                    // Add the post permalink to the post object
+                    $post->permalink = get_the_permalink( $post->ID );
+
+                    // Add the featured image URL to the post object
+                    $post->featured_image_url = get_the_post_thumbnail_url( $post->ID, 'full' );
+                endforeach;
+
                 break;
 
             // WooCommerce shop page
@@ -224,15 +241,61 @@ class Twig {
                     'title'     => get_the_title(),
                     'content'   => get_the_content()
                 );
+
+                break;
+
+            // Single post or page
+            case 'single' :
+                $data = array(
+                    // Get post data
+                    'post'              => array_merge(
+                        (array) get_post(),
+                        array(
+                            'post_content'  => apply_filters( 'the_content', get_the_content() ),
+                            'date'          => get_the_date(),
+                            'image'         => get_the_post_thumbnail_url( get_the_ID(), 'full' ),
+                            'author'        => get_the_author_meta( 'display_name', get_post_field( 'post_author', get_the_ID() ) ),
+                            'reading_time'  => ThemeFunctions::get_post_reading_time( get_the_content() ),
+                            'terms'         => get_the_terms( get_the_ID(), 'category' ),
+                        )
+                    ),
+
+                    // Get previous post data
+                    'previous_post'    => ( $previous_post = get_previous_post() ) ? array(
+                        'title'     => $previous_post->post_title,
+                        'permalink' => get_permalink( $previous_post ),
+                        'image'     => get_the_post_thumbnail_url( $previous_post, 'full' ),
+                    ) : null,
+
+                    // Get next post data
+                    'next_post'        => ( $next_post = get_next_post() ) ? array(
+                        'title'     => $next_post->post_title,
+                        'permalink' => get_permalink( $next_post ),
+                        'image'     => get_the_post_thumbnail_url( $next_post, 'full' ),
+                    ) : null,
+
+                    // Get sidebar content
+                    'sidebar'           => true,
+                    'sidebar_content'   => Widgets::get_sidebar_content( 'codehills_main_sidebar' ),
+                );
+
                 break;
 
             // Default page
             default:
                 $data = array(
-                    'title'     => get_the_title(),
-                    'content'   => get_the_content()
+                    'title'         => get_the_title(),
+                    'content'       => get_the_content()
                 );
         endswitch;
+
+        // Get site logo
+        $data['site_logo']                  = get_field('logo', 'option') ? get_field('logo', 'option') : get_template_directory_uri() . '/resources/img/theme/default-logo.svg';
+
+        // Get page settings
+        $data['page_header_style']          = get_field( 'page_header_style' ) || is_404() ? get_field( 'page_header_style' ) : 'light';
+        $data['page_header_position']       = get_field( 'page_header_position' ) || is_404() ? get_field( 'page_header_position' ) : 'absolute';
+        $data['header_background_color']    = get_field( 'header_background_color' ) ? get_field( 'header_background_color' ) : '';
 
         return $data;
     }
@@ -252,6 +315,20 @@ class Twig {
         self::$twig->addGlobal( 'theme_url', get_template_directory_uri() );
         self::$twig->addGlobal( 'uikit_menu_walker', new UIKitMenuWalker() );
         self::$twig->addGlobal( 'theme_text_domain', ThemeFunctions::TEXT_DOMAIN );
+
+        // Pass contact details to all templates
+        self::$twig->addGlobal( 'contact_details', array(
+            'title'         => get_field( 'contact_title', 'option' ),
+            'subtitle'      => get_field( 'contact_subtitle', 'option' ),
+            'content'       => get_field( 'contact_content', 'option' ),
+            'address'       => get_field( 'contact_address', 'option' ),
+            'phones'        => get_field( 'contact_phones', 'option' ),
+            'emails'        => get_field( 'contact_emails', 'option' ),
+            'contact_form'  => get_field( 'contact_form_shortcode', 'option' )
+        ) );
+
+        // Pass social icons to all templates
+        self::$twig->addGlobal( 'social', get_field( 'social', 'option' ) );
     }
     /**
      * Add theme functions to Twig
@@ -282,9 +359,9 @@ class Twig {
      */
     private static function add_wordpress_functions( $twig )
     {
+        $twig->addFunction( new TwigFunction( 'dd', 'dd' ) );
         $twig->addFunction( new TwigFunction( 'bloginfo', 'bloginfo' ) );
         $twig->addFunction( new TwigFunction( 'body_class', 'body_class' ) );
-        $twig->addFunction( new TwigFunction( 'dd', 'dd' ) );
         $twig->addFunction( new TwigFunction( 'get_field', 'get_field' ) );
         $twig->addFunction( new TwigFunction( 'get_sub_field', 'get_sub_field' ) );
         $twig->addFunction( new TwigFunction( 'get_term_link', 'get_term_link' ) );
@@ -301,6 +378,11 @@ class Twig {
         $twig->addFunction( new TwigFunction( 'wp_footer', 'wp_footer' ) );
         $twig->addFunction( new TwigFunction( 'wp_head', 'wp_head' ) );
         $twig->addFunction( new TwigFunction( 'wp_nav_menu', 'wp_nav_menu' ) );
+        $twig->addFunction( new TwigFunction( 'is_404', 'is_404' ) );
+        $twig->addFunction( new TwigFunction( 'wp_get_nav_menu_name', 'wp_get_nav_menu_name' ) );
+        $twig->addFunction( new TwigFunction( 'is_single', 'is_single' ) );
+        $twig->addFunction( new TwigFunction( 'is_singular', 'is_singular' ) );
+        $twig->addFunction( new TwigFunction( 'get_bloginfo', 'get_bloginfo' ) );
     }
 
     /**

@@ -56,7 +56,7 @@ else:
     ob_start();
 
     // Predefined content for the PHP class
-    get_template_part( 'app/console/patterns/new-block-class', null, [
+    get_template_part( 'app/Console/patterns/new-block-class', null, [
         'class_name'        => $class_name,
         'class_unique_id'   => str_replace( '-', '_', $class_name_to_filename ),
         'class_filename'    => $class_name_to_filename,
@@ -74,14 +74,14 @@ else:
 endif;
 
 // Check if view with that name already exist
-if ( file_exists( "{$block_views_dir}/{$block_view_filename}" ) ) :
-    echo "Block template file '{$block_view_filename}' already exists in views/builder folder!\n";
+if ( file_exists( "{$block_views_dir}/php/{$block_view_filename}" ) ) :
+    echo "Block template file '{$block_view_filename}' already exists in views/builder/php folder!\n";
 else:
     // Start buffer to capture output
     ob_start();
 
     // Predefined content for the PHP view
-    get_template_part( 'app/console/patterns/new-block-view', null, [
+    get_template_part( 'app/Console/patterns/new-block-view', null, [
         'html_class_name'   => $class_name_to_filename,
         'block_name'        => $block_name
     ] );
@@ -90,24 +90,24 @@ else:
     $block_view_content = ob_get_clean();
 
     // Write content to the file in the views builder directory
-    file_put_contents( "{$block_views_dir}/{$block_view_filename}", $block_view_content );
+    file_put_contents( "{$block_views_dir}/php/{$block_view_filename}", $block_view_content );
 
     // Output success message
-    echo "Block template file '{$block_view_filename}' created successfully in views/builder folder!\n";
+    echo "Block template file '{$block_view_filename}' created successfully in views/builder/php folder!\n";
 endif;
 
 // Define block view file name
 $block_view_twig_filename = "{$class_name_to_filename}.twig";
 
 // Check if Twig view with that name already exist
-if ( file_exists( "{$block_views_dir}/{$block_view_twig_filename}" ) ) :
-    echo "Block template file '{$block_view_twig_filename}' already exists in views/builder folder!\n";
+if ( file_exists( "{$block_views_dir}/twig/{$block_view_twig_filename}" ) ) :
+    echo "Block template file '{$block_view_twig_filename}' already exists in views/builder/twig folder!\n";
 else:
     // Start buffer to capture output
     ob_start();
 
     // Predefined content for the PHP view
-    get_template_part( 'app/console/patterns/new-block-view-twig', null, [
+    get_template_part( 'app/Console/patterns/new-block-view-twig', null, [
         'html_class_name'   => $class_name_to_filename,
         'block_name'        => $block_name
     ] );
@@ -116,8 +116,8 @@ else:
     $block_view_twig_content = ob_get_clean();
 
     // Write content to the file in the views builder directory
-    file_put_contents( "{$block_views_dir}/{$block_view_twig_filename}", $block_view_twig_content );
+    file_put_contents( "{$block_views_dir}/twig/{$block_view_twig_filename}", $block_view_twig_content );
 
     // Output success message
-    echo "Block template file '{$block_view_twig_filename}' created successfully in views/builder folder!\n";
+    echo "Block template file '{$block_view_twig_filename}' created successfully in views/builder/twig folder!\n";
 endif;

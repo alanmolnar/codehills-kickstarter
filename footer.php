@@ -12,4 +12,4 @@
 defined( 'WPINC' ) || exit;
 
 // Get footer template part
-get_template_part( 'views/template-parts/footer' );
+get_template_part( 'views/template-parts/php/footer' );

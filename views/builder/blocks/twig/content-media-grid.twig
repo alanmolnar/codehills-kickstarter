@@ -1,0 +1,93 @@
+    <div class="content-media-block {{ block_details.media.media_type == 'icon' or block_details.viewport_height ? 'content-media-viewport-height' : '' }} {{ block_details.media.media_type == 'icon' ? 'content-media-icon' : '' }}">
+        {% if block_details.fullwidth %}
+            {# Image #}
+            {% if block_details.media.media_type == 'image' and block_details.media.image is defined and block_details.media.image %}
+                <div class="cover-image {{ block_details.viewport_height ? 'viewport-height' : '' }} uk-position-{{ block_details.layout == 'default' ? 'right' : 'left' }} uk-position-z-index uk-width-{{ block_details.media_column_width }}@m uk-height-1-1 uk-visible@m" style="background-image: url('{{ block_details.media.image.url | e }}');"></div>
+            {% endif %}
+
+            {# Icon #}
+            {% if block_details.media.media_type == 'icon' and block_details.media.icon is defined and block_details.media.icon %}
+                <div class="content-media-icon-wrapper uk-width-{{ block_details.media_column_width }}@m {{ block_details.viewport_height ? 'viewport-height' : '' }} uk-position-{{ block_details.layout == 'default' ? 'right' : 'left' }} uk-flex uk-flex-center uk-flex-middle" {% if block_details.media.icon_background != '' %}style="background-color: {{ block_details.media.icon_background }};"{% endif %}>
+                    <img class="uk-preserve" src="{{ block_details.media.icon.url | e }}" alt="{{ block_details.media.icon.alt | e }}" width="{{ block_details.media.icon.width }}" height="{{ block_details.media.icon.height }}" uk-svg>
+                </div>
+            {% endif %}
+        {% endif %}
+
+        <div class="uk-container">
+            {# Title / content grid #}
+            {% if block_global_settings.block_titles is not empty and ( block_details.title_position == 'top' or block_details.title_position == 'top-fullwidth' ) %}
+                <div class="uk-margin-large-bottom">
+                    {% if block_details.title_position == 'top' %}
+                        {% include 'builder/partials/twig/title-content-grid.twig' with { 'title_content': block_details.title_content ? block_details.title_content : '' } %}
+                    {% elseif block_details.title_position == 'top-fullwidth' %}
+                        {% include 'builder/partials/twig/block-titles.twig' %}
+                    {% endif %}
+                </div>
+            {% endif %}
+
+            <div class="content-block">
+                <div class="{{ block_details.viewport_height ? 'viewport-height' : '' }} uk-grid-{{ block_details.columns_gap }} {{ block_details.vertical_align is not null ? 'uk-flex-' ~ block_details.vertical_align : '' }} uk-grid-match" uk-grid>
+                    <div class="uk-width-{{ block_details.media_column_width }}@m uk-position-relative">
+                        {# Titles #}
+                        {% if block_details.title_position == 'media' %}
+                            {% include 'builder/partials/twig/block-titles.twig' %}
+                        {% endif %}
+
+                        {% if not block_details.fullwidth %}
+                            {# Media types #}
+                            <div class="uk-text-center uk-visible@m">
+                                {% include 'builder/partials/twig/media-types.twig' %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="uk-width-expand@m {{ block_details.layout == 'default' ? 'uk-flex-first@m' : '' }} uk-text-{{ block_details.content.text_align }}">
+                        {# Separator #}
+                        {% if block_details.media.media_type == 'icon' %}
+                            <hr class="uk-invisible uk-margin-xlarge-top uk-margin-large-bottom uk-hidden@m">
+                        {% endif %}
+
+                        {% if block_details.columns_gap == 'collapse' %}
+                            <div class="uk-panel uk-panel-large uk-flex uk-flex-middle">
+                                <div>
+                        {% endif %}
+
+                        {# Titles #}
+                        {% if block_details.title_position == 'content' %}
+                            {% include 'builder/partials/twig/block-titles.twig' with { 'block_global_settings': block_global_settings } %}
+                        {% endif %}
+
+                        {# Content #}
+                        {% if block_details.content.content != '' %}
+                            <div>{{ block_details.content.content | raw }}</div>
+                        {% endif %}
+
+                        {# CTA button #}
+                        {% if block_global_settings.have_cta %}
+                            <div class="uk-child-width-auto@s uk-flex-{{ block_details.content.text_align }} uk-margin-top uk-grid-small" uk-grid>
+                                {{ get_ctas( block_global_settings.have_cta ) }}
+                            </div>
+                        {% endif %}
+
+                        {% if block_details.columns_gap == 'collapse' %}
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        {# Separator #}
+                        {% if block_details.media.media_type == 'icon' %}
+                            <hr class="uk-invisible uk-margin-xlarge-top uk-margin-large-bottom uk-hidden@s">
+                        {% else %}
+                            <hr class="uk-invisible uk-hidden@m">
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            {# Media types #}
+            <div class="uk-hidden@m">
+                {% include 'builder/partials/twig/media-types.twig' %}
+            </div>
+        </div>
+    </div>
+</section> <!-- Content Media Grid block end -->

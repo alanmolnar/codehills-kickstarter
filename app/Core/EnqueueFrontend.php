@@ -29,11 +29,13 @@ class EnqueueFrontend {
     public function init()
     {
         // Register theme styles
-        wp_register_style( 'codehills_kickstarter_google_fonts', '//fonts.googleapis.com/css2?family=Outfit:wght@0,100..900&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap' );
+        wp_register_style( 'codehills_kickstarter_google_fonts', '//fonts.googleapis.com/css2?family=Outfit:wght@0,100..900&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap', array(), null );
+        wp_register_style( 'codehills_kickstarter_splide_stylesheet', get_template_directory_uri() . '/resources/css/splide-core.min.css' );
         wp_register_style( 'codehills_kickstarter_main_theme_stylesheet', get_template_directory_uri() . '/resources/css/main.css' );
 
         // Enqueue theme styles
         wp_enqueue_style( 'codehills_kickstarter_google_fonts' );
+        wp_enqueue_style( 'codehills_kickstarter_splide_stylesheet' );
         wp_enqueue_style( 'codehills_kickstarter_main_theme_stylesheet' );
 
         // Smart jQuery inclusion
@@ -46,6 +48,8 @@ class EnqueueFrontend {
         // Register theme scripts
         wp_register_script( 'codehills_kickstarter_uikit_script', get_template_directory_uri() . '/resources/js/uikit.min.js', array(), false, true );
         wp_register_script( 'codehills_kickstarter_uikit_icons_script', get_template_directory_uri() . '/resources/js/uikit-icons.min.js', array(), false, true );
+        wp_register_script( 'codehills_kickstarter_uikit_icons_script', get_template_directory_uri() . '/resources/js/uikit-icons.min.js', array(), false, true );
+        wp_register_script( 'codehills_kickstarter_splide_script', get_template_directory_uri() . '/resources/js/splide.min.js', array(), false, true );
         wp_register_script( 'codehills_kickstarter_main_theme_script', get_template_directory_uri() . '/resources/js/main.js', array(), false, true );
         
         // Localize script for using with wp-ajax
@@ -56,6 +60,8 @@ class EnqueueFrontend {
         // Enqueue theme scripts
         wp_enqueue_script( 'codehills_kickstarter_uikit_script' );
         wp_enqueue_script( 'codehills_kickstarter_uikit_icons_script' );
+        wp_enqueue_script( 'codehills_kickstarter_splide_script' );
+        wp_enqueue_script( 'codehills_kickstarter_splide_autoscroll_script' );
         wp_enqueue_script( 'codehills_kickstarter_main_theme_script' );
     }
 }

@@ -1,4 +1,4 @@
-{% include 'template-parts/header.twig' %}
+{% include 'template-parts/twig/header.twig' %}
 
 <hr class="uk-margin-large-top uk-margin-bottom">
 
@@ -16,7 +16,7 @@
             {% endif %}
 
             {% if cta_one_label != '' and cta_one_url is not null %}
-                {% include 'template-parts/cta-button.twig' with {
+                {% include 'template-parts/twig/cta-button.twig' with {
                     'cta_label'             : cta_one_label,
                     'cta_url'               : cta_one_url,
                     'cta_style'             : 'secondary',
@@ -27,7 +27,7 @@
             {% endif %}
 
             {% if cta_two_label != '' and cta_two_url is not null %}
-                {% include 'template-parts/cta-button.twig' with {
+                {% include 'template-parts/twig/cta-button.twig' with {
                     'cta_label'             : cta_two_label,
                     'cta_url'               : cta_two_url,
                     'cta_style'             : 'outline',
@@ -46,4 +46,4 @@
 
 <hr class="uk-margin-large-top uk-margin-large-bottom">
 
-{% include 'template-parts/footer.twig' %}
+{% include 'template-parts/twig/footer.twig' %}

@@ -13,6 +13,7 @@
 
 namespace CodehillsKickstarter\Core;
 
+use WP_Query;
 use Twig\Environment;
 use Twig\TwigFunction;
 use Twig\Loader\FilesystemLoader;
@@ -43,7 +44,8 @@ class ThemeFunctions {
      *
      * @return ThemeFunctions An instance of the class.
      */
-    public static function instance() {
+    public static function instance()
+    {
         if ( is_null( self::$instance ) ) :
             self::$instance = new self();
         endif;
@@ -61,7 +63,7 @@ class ThemeFunctions {
      */
 
      // Text domain constant
-    const TEXT_DOMAIN = 'galenika';
+    const TEXT_DOMAIN = 'codehills-kickstarter';
 
     /**
      *  Theme functions class constructor
@@ -205,7 +207,33 @@ class ThemeFunctions {
         // Trim content
         $excerpt = wp_trim_words( $content, $count );
 
-        return $excerpt;
+        return $excerpt . '...';
+    }
+
+    /**
+     * Get post reading time
+     * 
+     * Calculate the reading time of a post based on its content
+     * 
+     * @since 2.1.3
+     * @access public
+     * @param string $content The content of the post
+     * @param string $string The string to append to the reading time (default: 'min read')
+     * @return string The reading time in minutes with the appended string
+     */
+    public static function get_post_reading_time( $content, $string = 'min read' )
+    {
+        // Get content words
+        $word_count = str_word_count( strip_tags( $content ) );
+
+        // Words per minute
+        $words_per_minute = 200;
+
+        // Calculate reading time
+        $minutes = floor( $word_count / $words_per_minute );
+
+        // Return reading time
+        return ( $minutes > 0 ? $minutes : 1 ) . ' ' . $string;
     }
 
     /**

@@ -60,20 +60,26 @@ class ContentMediaGrid extends Builder
 
         // Block content
         $layout             = get_sub_field( 'layout' );
-        $media_column_width = get_sub_field( 'media_column_width' );
-        $vertical_align     = get_sub_field( 'vertical_align' );
+        $title_position     = get_sub_field( 'title_position' );
         $fullwidth          = get_sub_field( 'fullwidth' );
         $viewport_height    = get_sub_field( 'viewport_height' );
+        $media_column_width = get_sub_field( 'media_column_width' );
+        $columns_gap        = get_sub_field( 'columns_gap' );
+        $vertical_align     = get_sub_field( 'vertical_align' );
+        $title_content      = get_sub_field( 'title_content' );
         $content            = get_sub_field( 'content' );
         $media              = get_sub_field( 'media' );
         
         // Set block details
         $block_details = Helpers::collect( [
             'layout'             => $layout,
-            'media_column_width' => $media_column_width,
-            'vertical_align'     => $vertical_align,
+            'title_position'     => $title_position,
             'fullwidth'          => $fullwidth,
             'viewport_height'    => $viewport_height,
+            'media_column_width' => $media_column_width,
+            'columns_gap'        => $columns_gap,
+            'vertical_align'     => $vertical_align,
+            'title_content'      => $title_content,
             'content'            => $content,
             'media'              => $media
         ] );

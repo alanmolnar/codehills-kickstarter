@@ -59,21 +59,16 @@ class FAQs extends Builder
         $block_global_settings = Builder::get_block_global_settings( $page_id, $args, self::$id );
 
         // Get block details from manual block call
-        $content                    = isset( $args['content'] ) ? $args['content'] : get_field( self::$id . '_content', 'option' );
-        $enable_filters             = isset( $args['enable_filters'] ) ? $args['enable_filters'] : get_field( self::$id . '_enable_filters', 'option' );
-        $faqs                       = isset( $args['faq'] ) ? $args['faq'] : get_field( self::$id, 'option' );
-        $disable_global_title       = isset( $args['disable_global_title'] ) ? $args['disable_global_title'] : false;
-        $disable_global_subtitle    = isset( $args['disable_global_subtitle'] ) ? $args['disable_global_subtitle'] : false;
-        $disable_global_content     = isset( $args['disable_global_content'] ) ? $args['disable_global_content'] : false;
+        $content        = isset( $args['content'] ) ? $args['content'] : get_field( self::$id . '_content', 'option' );
+        $faqs           = isset( $args['faq'] ) ? $args['faq'] : get_field( self::$id, 'option' );
+        $enable_filters = isset( $args['enable_filters'] ) ? $args['enable_filters'] : get_field( self::$id . '_enable_filters', 'option' );
 
         // Block content
-        $content                                        = get_sub_field( 'content' ) ? get_sub_field( 'content' ) : $content;
-        $enable_filters                                 = get_sub_field( 'enable_filters' ) ? get_sub_field( 'enable_filters' ) : $enable_filters;
-        $faqs                                           = get_sub_field( 'faqs' ) ? get_sub_field( 'faqs' ) : get_field( self::$id, 'option' );
-        $block_global_settings->disable_global_title    = get_sub_field( 'disable_global_title' ) ? get_sub_field( 'disable_global_title' ) : $disable_global_title;
-        $block_global_settings->disable_global_subtitle = get_sub_field( 'disable_global_subtitle' ) ? get_sub_field( 'disable_global_subtitle' ) : $disable_global_subtitle;
-        $disable_global_content                         = get_sub_field( 'disable_global_content' ) ? get_sub_field( 'disable_global_content' ) : $disable_global_content;
-
+        $content                                = get_sub_field( 'content' ) ? get_sub_field( 'content' ) : $content;
+        $faqs                                   = get_sub_field( 'faqs' ) ? get_sub_field( 'faqs' ) : get_field( self::$id, 'option' );
+        $enable_filters                         = get_sub_field( 'enable_filters' ) ? get_sub_field( 'enable_filters' ) : $enable_filters;
+        $block_global_settings->block_titles    = $block_global_settings->block_titles ? $block_global_settings->block_titles : get_field( self::$id . '_block_titles', 'option' );
+        
         // Get empty array for filters
         $filters = array();
 

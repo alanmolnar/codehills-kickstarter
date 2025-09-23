@@ -17,6 +17,7 @@ use WP_Query;
 use CodehillsKickstarter\Core\Twig;
 use CodehillsKickstarter\Core\Builder;
 use CodehillsKickstarter\Helpers\Helpers;
+use CodehillsKickstarter\Core\ThemeFunctions;
 
 class PostsGrid extends Builder
 {    
@@ -62,6 +63,8 @@ class PostsGrid extends Builder
         // Block content
         $post_type      = get_sub_field( 'post_type' );
         $taxonomy       = get_sub_field( 'taxonomy' );
+        $post_box_style = get_sub_field( 'post_box_style' ) ? get_sub_field( 'post_box_style' ) : 'default';
+        $columns        = get_sub_field( 'columns' ) ? get_sub_field( 'columns' ) : '4';
         $enable_filters = get_sub_field( 'enable_filters' );
         $content        = get_sub_field( 'content' );
 
@@ -74,14 +77,50 @@ class PostsGrid extends Builder
             'order'             => 'DESC'
         );
 
+        // Get the ACF terms field for the taxonomy if set
+        if( $taxonomy != null ) :
+            switch( $taxonomy ) :
+                case 'category':
+                    $acf_field_slug = 'categories';
+                    break;
+
+                default:
+                    $acf_field_slug = null;
+            endswitch;
+        endif;
+
+        // If the ACF field slug is set, get the terms for the taxonomy and add them to the query arguments
+        if( $acf_field_slug != null ) :
+            // Get the ACF terms field for the taxonomy
+            $terms = get_sub_field( $acf_field_slug );
+
+            // If terms are set, add them to the query arguments
+            if( $terms ) :
+                $args['tax_query'] = array(
+                    array(
+                        'taxonomy' => $taxonomy,
+                        'field'    => 'id',
+                        'terms'    => $terms
+                    )
+                );
+            endif;
+        endif;
+
         // Query the posts
         $posts_query = new WP_Query( $args );
 
-        if( $taxonomy != null && $enable_filters && $posts_query->have_posts() ) :
+        // Get taxonomy terms if taxonomy is set, filters are enabled and posts are available
+        if( $taxonomy != null && $posts_query->have_posts() && $terms == null ) :
             // Get all news categories
             $categories = get_terms( array(
                 'taxonomy'   => $taxonomy,
                 'hide_empty' => true
+            ) );
+        else:
+            $categories = get_terms( array(
+                'taxonomy'   => $taxonomy,
+                'hide_empty' => true,
+                'include'    => $terms
             ) );
         endif;
 
@@ -101,16 +140,63 @@ class PostsGrid extends Builder
         else:
             $filters = null;
         endif;
+
+        // Add ACF fields to the posts in the query
+        if( $posts_query->have_posts() ) :
+            foreach( $posts_query->posts as $index => $post ) :
+                // Add the post permalink to the post object
+                $post->permalink = get_the_permalink( $post->ID );
+
+                // Add the ACF fields to the post object
+                $post->acf = get_fields( $post->ID );
+
+                // Add the featured image URL to the post object
+                $post->featured_image_url = get_the_post_thumbnail_url( $post->ID, 'full' );
+
+                // Add the post reading time to the post object
+                $post->reading_time = ThemeFunctions::get_post_reading_time( $post->post_content );
+
+                // Add the post terms names and permalink to the post object
+                if( $taxonomy != null ) :
+                    $terms = get_the_terms( $post->ID, $taxonomy );
+
+                    // If terms are available, add the term names and permalink to the post object
+                    if( $terms && ! is_wp_error( $terms ) ) :
+                        // Initialize the post_terms array
+                        $post->post_terms = array();
+
+                        // Loop through the terms and add them to the post_terms array
+                        foreach( $terms as $term ) :
+                            $post->post_terms[$term->slug] = array(
+                                'name'      => $term->name,
+                                'permalink' => get_term_link( $term )
+                            );
+                        endforeach;
+                    else:
+                        // If no terms are available, set post_terms to null
+                        $post->post_terms = null;
+                    endif;
+                else:
+                    // If no terms are available, set post_terms to null
+                    $post->post_terms = null;
+                endif;
+
+                // Update the post in the posts array
+                $posts_query->posts[$index] = $post;
+            endforeach;
+        endif;
         
         // Set block details
         $block_details = Helpers::collect( [
             'post_type'         => $post_type,
             'taxonomy'          => $taxonomy,
+            'post_box_style'    => $post_box_style,
+            'columns'           => $columns,
             'enable_filters'    => $enable_filters,
             'filters'           => $filters,
             'content'           => $content,
             'posts_query'       => $posts_query,
-            'categories'        => $taxonomy != null && $enable_filters && $posts_query->have_posts() ? $categories : null
+            'categories'        => $taxonomy != null && $posts_query->have_posts() ? $categories : null
         ] );
 
         // Reset the post data

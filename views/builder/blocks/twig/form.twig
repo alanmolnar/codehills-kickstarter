@@ -1,0 +1,26 @@
+    <div class="form-block">
+        <div class="uk-container">
+            {# Title and subtitle #}
+            {% include 'builder/partials/twig/block-titles.twig' with { 'block_global_settings': block_global_settings } %}
+
+            {# Content #}
+            {% if block_details.content != '' %}
+                <div class="uk-margin-top">{{ block_details.content | raw }}</div>
+            {% endif %}
+
+            {# CTA button #}
+            {% if block_global_settings.have_cta %}
+                <div class="uk-child-width-auto@s uk-margin-medium-top uk-grid-small" uk-grid>
+                    {{ get_ctas( block_global_settings.have_cta ) }}
+                </div>
+            {% endif %}
+
+            {# Form #}
+            <div class="form-wrapper uk-margin-top" {% if block_details.form_bg_color != '' %}style="background-color: {{ block_details.form_bg_color }};"{% endif %}>
+                {% if block_details.form_shortcode != '' %}
+                    {{ block_details.form_shortcode | raw }}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section> <!-- Form block end -->

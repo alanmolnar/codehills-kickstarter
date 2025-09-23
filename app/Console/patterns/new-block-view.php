@@ -46,7 +46,7 @@ $block_details = $args[\'block_details\']; ?>
         <div class="uk-container">
             <?php
                 // Title and subtitle
-                get_template_part( \'views/builder/partials/block-titles\', null, array(
+                get_template_part( \'views/builder/partials/php/block-titles\', null, array(
                     \'block_global_settings\' => $block_global_settings
                 ) );
 

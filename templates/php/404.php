@@ -47,7 +47,7 @@ $bg_image       = get_field( '404_background_image', 'option' ); ?>
 
                 // CTA button one
                 if ( $cta_one_label != '' && $cta_one_url != null ) :
-                    get_template_part( 'views/template-parts/cta-button', null, array(
+                    get_template_part( 'views/template-parts/php/cta-button', null, array(
                         'cta_label'             => $cta_one_label,
                         'cta_url'               => $cta_one_url,
                         'cta_style'             => 'secondary',
@@ -59,7 +59,7 @@ $bg_image       = get_field( '404_background_image', 'option' ); ?>
 
                 // CTA button two
                 if ( $cta_two_label != '' && $cta_two_url != null ) :
-                    get_template_part( 'views/template-parts/cta-button', null, array(
+                    get_template_part( 'views/template-parts/php/cta-button', null, array(
                         'cta_label'             => $cta_two_label,
                         'cta_url'               => $cta_two_url,
                         'cta_style'             => 'outline',

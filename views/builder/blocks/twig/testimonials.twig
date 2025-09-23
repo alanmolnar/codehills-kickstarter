@@ -1,0 +1,36 @@
+    <div class="testimonials-block">
+        <div class="uk-container">
+            <div class="uk-text-center">
+                {# Title and subtitle #}
+                {% include 'builder/partials/twig/block-titles.twig' with { 'block_global_settings': block_global_settings } %}
+
+                {# Content #}
+                {% if block_details.content != '' %}
+                    <div class="uk-margin-top">{{ block_details.content | raw }}</div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="uk-container uk-margin-top">
+            {# Testimonials #}
+            {% if block_details.testimonials %}
+                <div class="uk-position-relative" tabindex="-1" uk-slider="autoplay: true;">
+                    <div class="uk-slider-items uk-child-width-1-3@l uk-child-width-1-2@s uk-grid uk-grid-xlarge uk-visible@s">
+                        {% for i in 0..1 %}
+                            {% for testimonial in block_details.testimonials %}
+                                {% include 'builder/partials/twig/testimonial-row.twig' with { 'testimonial': testimonial } %}
+                            {% endfor %}
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+            
+            {# CTA button #}
+            {% if block_global_settings.have_cta %}
+                <div class="uk-child-width-auto@m uk-margin-medium-top uk-grid-small" uk-grid>
+                    {{ get_ctas( block_global_settings.have_cta ) }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section> <!-- Testimonials block end -->

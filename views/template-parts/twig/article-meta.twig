@@ -1,0 +1,19 @@
+<div class="article-meta-grid uk-flex uk-flex-middle uk-flex-wrap">
+    <div class="article-meta-single uk-flex uk-flex-middle">
+        <img class="uk-preserve" src="{{ theme_url }}/resources/img/icon-author.svg" width="16" height="16" alt="Post Author" uk-svg>
+
+        <span class="article-meta">{{ post.author }}</span>
+    </div>
+
+    <div class="article-meta-single uk-flex uk-flex-middle">
+        <img class="uk-preserve" src="{{ theme_url }}/resources/img/icon-calendar.svg" width="16" height="16" alt="Post Date" uk-svg>
+        
+        <span class="article-meta">{{ post.date | date('F j, Y') }}</span>
+    </div>
+
+    <div class="article-meta-single uk-flex uk-flex-middle">
+        <img class="uk-preserve" src="{{ theme_url }}/resources/img/icon-clock.svg" width="16" height="16" alt="Reading Time" uk-svg>
+        
+        <span class="article-meta">{{ post.reading_time }}</span>
+    </div>
+</div>

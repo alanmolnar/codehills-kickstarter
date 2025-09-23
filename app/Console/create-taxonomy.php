@@ -71,7 +71,7 @@ else:
     ob_start();
 
     // Predefined content for the PHP class
-    get_template_part( 'app/console/patterns/new-taxonomy-class', null, [
+    get_template_part( 'app/Console/patterns/new-taxonomy-class', null, [
         'class_name'            => $class_name,
         'post_type'             => $post_type,
         'taxonomy_unique_id'    => $taxonomy_unique_id,

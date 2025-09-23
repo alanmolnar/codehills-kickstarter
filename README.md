@@ -40,6 +40,37 @@ You have successfully cloned the repository to your local machine. You can now n
 
 # Changelog
 
+## 2.2.0 - Sep 23rd, 2025
+- TGM Plugin Activation replaced with native WP Plugin Dependencies in the ThemePlugins class
+- Duplicate Page plugin added to the theme plugins list
+- Hello Dolly plugin removal fixed
+- app\Builder\FAQs renamed to Faqs (fixing the case-sensitive class loading)
+- Added "array(), null" to EnqueueFrontend class to fix loading multiple Google fonts
+- PHP and Twig files separeted into /php and /twig folders
+- Added Page Settings values to the Twig class
+- PHP/Twig folders file separation
+- Added ", array(), null" to the EnqueueFrontend class for Google fonts, to support multifonts loading
+- Logo field under Theme Settings is return array now, not the image url
+- Block Title & Subtitle fields replaced with the repeater with several more options for each title
+- Block titles repeater code added to the builder block classes that have global usage (like Faq block), to replace old approach
+- WP Query class added to replace get_page_by_title functions in the ThemeSetup class
+- PHP warning fixed in UIKitMenuWalker class
+- Function get_post_reading_time added to the ThemeFunctions class
+- Twgi file article-content.twig updated, all PHP functions removed
+- Splide slider added as theme slider/carousel option
+- Content / Media block, grid gap and title position fields added
+- Content / Media blok, .twig and .php templates updated
+- Partial article-box replaced with post-default-box
+- Page Settings fields default values updated ('header_style => 'dark', header_position => 'relative', header_background_color => '')
+- Template part article-content updated and template parts article-meta and article-share-buttons added
+- Builder class method page_builder() updated with post object that pass post data to the article-content template part
+
+## 2.1.3 - Apr 15th, 2025
+- Fixed is_woocommerce() error in the Twig class
+- Added more WordPress functions to the Twig class
+- Fixed capitalized folder names in console create-*.php files
+- Fixed capitalized folder names in Builder class
+
 ## 2.1.2 - Mar 28th, 2025
 - Added 'light/dark' mode for block to the Builder class
 - Subfolder names in /app/ folder fixed, capitalized

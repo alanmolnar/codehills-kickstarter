@@ -28,7 +28,7 @@ h3, .uk-h3,
 h4, .uk-h4
 h5 {
     color: #0B1709;
-    font-family: var(----kickstarter-font-primary);
+    font-family: var(--kickstarter-font-primary);
     font-weight: 700;
     line-height: 1;
 }

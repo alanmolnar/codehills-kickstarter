@@ -59,7 +59,7 @@ else:
     ob_start();
 
     // Predefined content for the PHP class
-    get_template_part( 'app/console/patterns/new-cpt-class', null, [
+    get_template_part( 'app/Console/patterns/new-cpt-class', null, [
         'class_name'        => $class_name,
         'cpt_unique_id'     => $cpt_unique_id,
         'cpt_singular'      => $cpt_singular,

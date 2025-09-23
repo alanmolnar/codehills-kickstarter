@@ -1,0 +1,27 @@
+{# Image #}
+{% if block_details.media.media_type == 'image' and block_details.media.image is defined and block_details.media.image %}
+    <img class="img-border-rounded" src="{{ block_details.media.image.url | e }}" alt="{{ block_details.media.image.alt | e }}">
+{% endif %}
+
+{# Gallery #}
+{% if block_details.media.media_type == 'gallery' and block_details.media.gallery is defined and block_details.media.gallery is not empty %}
+    <div class="splide splide-benefits-carousel uk-position-relative">
+        {# Splide slider track #}
+        {% include 'builder/partials/splide-benefits-carousel-track.twig' with { 'slides': block_details.media.gallery } %}
+
+        {# Splide slider navigation & pagination #}
+        <div class="uk-position-bottom uk-margin-bottom">
+            {% include 'builder/partials/splide-slider-navigation-pagination.twig' %}
+        </div>
+    </div>
+{% endif %}
+
+{# Video - YouTube #}
+{% if block_details.media.media_type == 'video' and block_details.media.video_type == 'youtube' %}
+    <iframe class="img-border-rounded" src="https://www.youtube-nocookie.com/embed/{{ block_details.media.youtube_video_id | e }}?autoplay=0&amp;showinfo=0&amp;rel=0&amp;modestbranding=1&amp;playsinline=1" width="1920" height="1080" allowfullscreen uk-responsive uk-video="automute: true"></iframe>
+{% endif %}
+
+{# Video - MP4 #}
+{% if block_details.media.media_type == 'image' and block_details.media.video_type == 'mp4' %}
+    <video class="img-border-rounded" src="{{ block_details.media.mp4_video | e }}" width="1920" height="1080" controls playsinline hidden uk-video></video>
+{% endif %}

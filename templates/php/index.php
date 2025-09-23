@@ -21,7 +21,7 @@ defined( 'WPINC' ) || exit;
 get_header();
 
 // Main Loop
-get_template_part( 'views/template-parts/main-loop' );
+get_template_part( 'views/template-parts/php/main-loop' );
 
 // Include footer
 get_footer();

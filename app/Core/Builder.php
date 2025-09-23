@@ -14,9 +14,9 @@
 namespace CodehillsKickstarter\Core;
 
 use CodehillsKickstarter\Core\Twig;
+use CodehillsKickstarter\Core\Widgets;
 use CodehillsKickstarter\Core\ThemeFunctions;
 use CodehillsKickstarter\Builder\WordPressContent;
-
 
 // Prevent direct access to this file from url
 defined( 'WPINC' ) || exit;
@@ -73,7 +73,7 @@ class Builder {
     public function __construct()
     {
         // Instantiate all blocks from /app/builder directory
-        $blocks = glob( get_template_directory() . '/app/builder/*.php' );
+        $blocks = glob( get_template_directory() . '/app/Builder/*.php' );
 
         // Loop through blocks
         foreach( $blocks as $block ) :
@@ -101,39 +101,72 @@ class Builder {
      */
     public static function page_builder( $page_id )
     {
-        // Get the post/page title
-        $title = esc_attr( get_the_title() );
+        // If posts page is set, use the page ID from the settings
+        if ( get_option( 'page_for_posts' ) && is_home() ) :
+            $page_id = get_option( 'page_for_posts' );
+        endif;
 
-        // Check value exists.
-        if( have_rows( 'page_builder' ) ) :
+        // Get the post/page title
+        $title = esc_attr( get_the_title( $page_id ) );
+
+        // Check if page builder exist.
+        if( have_rows( 'page_builder', $page_id  ) ) :
             echo '<section id="page-builder" class="uk-padding-remove">';
-                // Render page builder blocks
-                self::page_builder_render(  $page_id );
+
+            // Render page builder blocks
+            self::page_builder_render(  $page_id );
+
             echo '</section> <!-- #wrapper end -->';
         elseif ( ! empty( get_the_content() ) ) :
             // Get the data
             $data = array(
-                'title'                 => $title,
-                'content'               => apply_filters( 'the_content', get_the_content() ),
-                'featured_image_url'    => get_the_post_thumbnail_url( get_the_ID(), 'full' )
+                // Get post data
+                'post'          => array_merge(
+                    (array) get_post(),
+                    array(
+                        'post_content'  => apply_filters( 'the_content', get_the_content() ),
+                        'date'          => get_the_date(),
+                        'image'         => get_the_post_thumbnail_url( $page_id, 'full' ),
+                        'author'        => get_the_author_meta( 'display_name', get_post_field( 'post_author', $page_id ) ),
+                        'reading_time'  => ThemeFunctions::get_post_reading_time( get_the_content() ),
+                        'terms'         => get_the_terms( $page_id, 'category' ),
+                    )
+                ),
+                // Get previous post data
+                'previous_post'    => ( $previous_post = get_previous_post() ) ? array(
+                    'title'     => $previous_post->post_title,
+                    'permalink' => get_permalink( $previous_post ),
+                    'image'     => get_the_post_thumbnail_url( $previous_post, 'full' ),
+                ) : null,
+
+                // Get next post data
+                'next_post'        => ( $next_post = get_next_post() ) ? array(
+                    'title'     => $next_post->post_title,
+                    'permalink' => get_permalink( $next_post ),
+                    'image'     => get_the_post_thumbnail_url( $next_post, 'full' ),
+                ) : null,
+
+                // Get sidebar content
+                'sidebar'           => true,
+                'sidebar_content'   => Widgets::get_sidebar_content( 'codehills_main_sidebar' ),
             );
 
             // Article content
             if( ThemeFunctions::twig_enabled() ) :
                 // Twig template
-                Twig::render( 'template-parts/article-content.twig', $data );
+                Twig::render( 'template-parts/twig/article-content.twig', $data );
             else:
                 // PHP template
-                get_template_part( 'views/template-parts/article-content', null, $data );
+                get_template_part( 'views/template-parts/php/article-content', null, $data );
             endif;
         else:
             // Builder notification
             if( ThemeFunctions::twig_enabled() ) :
                 // Twig template
-                Twig::render( 'template-parts/builder-notification.twig', array( 'title' => $title ) );
+                Twig::render( 'template-parts/twig/builder-notification.twig', array( 'title' => $title ) );
             else:
                 // PHP template
-                get_template_part( 'views/template-parts/builder-notification', null, array( 'title' => $title ) );
+                get_template_part( 'views/template-parts/php/builder-notification', null, array( 'title' => $title ) );
             endif;
         endif;
     }
@@ -224,7 +257,7 @@ class Builder {
                 echo '>';
 
                 if( $block_background_overlay ) :
-                    echo '<div class="uk-overlay-default uk-position-cover uk-position-z-index"></div>';
+                    echo '<div class="uk-overlay-primary uk-position-cover"></div>';
                 endif;
 
                 // Section background cover image
@@ -271,12 +304,12 @@ class Builder {
                 // Block notification
                 if( ThemeFunctions::twig_enabled() ) :
                     // Twig template
-                    Twig::render( 'template-parts/block-notification.twig', array(
+                    Twig::render( 'template-parts/twig/block-notification.twig', array(
                         'block_global_settings' => $block_global_settings
                     ) );
                 else:
                     // PHP template
-                    get_template_part( 'views/template-parts/block-notification', null, array(
+                    get_template_part( 'views/template-parts/php/block-notification', null, array(
                         'block_global_settings' => $block_global_settings
                     ) );
                 endif;
@@ -299,10 +332,10 @@ class Builder {
         // Render the block
         if( ThemeFunctions::twig_enabled() ) :
             // Twig template
-            Twig::render( 'builder/blocks/' . $filename . '.twig', $data );
+            Twig::render( 'builder/blocks/twig/' . $filename . '.twig', $data );
         else:
             // PHP template
-            get_template_part( 'views/builder/blocks/' . $filename, null, $data );
+            get_template_part( 'views/builder/blocks/php/' . $filename, null, $data );
         endif;
     }
 
@@ -318,38 +351,45 @@ class Builder {
      */
     public static function get_block_global_settings( $page_id, $args = null, $prefix = '' )
     {
-        // Get block details from manual block call
-        $title          = isset( $args['title'] ) ? $args['title'] : get_field( $prefix . '_title', 'option' );
-        $title_tag      = isset( $args['title_tag'] ) ? $args['title_tag'] : get_field( $prefix . '_title_tag', 'option' );
-        $title_style    = isset( $args['title_style'] ) ? $args['title_style'] : get_field( $prefix . '_title_style', 'option' );
-        $subtitle       = isset( $args['subtitle'] ) ? $args['subtitle'] : get_field( $prefix . '_subtitle', 'option' );
-        $subtitle_tag   = isset( $args['subtitle_tag'] ) ? $args['subtitle_tag'] : get_field( $prefix . '_subtitle_tag', 'option' );
-        $subtitle_style = isset( $args['subtitle_style'] ) ? $args['subtitle_style'] : get_field( $prefix . '_subtitle_style', 'option' );
-
-        // Block title and subtitle
-        $title          = get_sub_field( 'block_title', $page_id ) ? get_sub_field( 'block_title', $page_id ) : $title;
-        $title_tag      = get_sub_field( 'block_title_tag', $page_id ) ? get_sub_field( 'block_title_tag', $page_id ) : $title_tag;
-        $title_style    = get_sub_field( 'block_title_style', $page_id ) ? get_sub_field( 'block_title_style', $page_id ) : $title_style;
-        $subtitle       = get_sub_field( 'block_subtitle', $page_id ) ? get_sub_field( 'block_subtitle', $page_id ) : $subtitle;
-        $subtitle_tag   = get_sub_field( 'block_subtitle_tag', $page_id ) ? get_sub_field( 'block_subtitle_tag', $page_id ) : $subtitle_tag;
-        $subtitle_style = get_sub_field( 'block_subtitle_style', $page_id ) ? get_sub_field( 'block_subtitle_style', $page_id ) : $subtitle_style;
+        // Block titles
+        $block_titles = isset( $args['block_titles'] ) ? $args['block_titles'] : get_sub_field( 'block_titles', $page_id );
 
         // Block call to actions
-        $have_cta       = isset( $args['have_cta'] ) ? $args['have_cta'] : get_sub_field( 'block_ctas', $page_id );
+        $have_cta = isset( $args['have_cta'] ) ? $args['have_cta'] : get_sub_field( 'block_ctas', $page_id );
         
         // Return global settings as object
         return (object) array(
-            // Block title and subtitle
-            'title'             => $title,
-            'title_tag'         => $title_tag,
-            'title_style'       => $title_style,
-            'subtitle'          => $subtitle,
-            'subtitle_tag'      => $subtitle_tag,
-            'subtitle_style'    => $subtitle_style,
-
-            // Block call to actions
-            'have_cta'          => $have_cta
+            'block_titles'  => $block_titles,
+            'have_cta'      => $have_cta
         );
+    }
+
+    /**
+     * Get cached block data
+     * 
+     * @since 2.0.0
+     * @access protected
+     * @param string $cache_key The cache key
+     * @param callable $callback The callback function to get the data
+     * @param int $expiration The expiration time in seconds
+     * @return mixed The cached data or the data from the callback function
+     */
+    protected static function get_cached_block_data( $cache_key, $callback, $expiration = 300 )
+    {
+        // Get the cached data
+        $data = get_transient( $cache_key );
+
+        // If cached data is not available, call the callback function to get the data
+        if( $data === false ) :
+            // Call the callback function to get the data
+            $data = call_user_func( $callback );
+
+            // Cache the data for the specified expiration time
+            set_transient( $cache_key, $data, $expiration );
+        endif;
+
+        // Return the data
+        return $data;
     }
 
     /**
@@ -379,10 +419,10 @@ class Builder {
                 // CTA button
                 if( ThemeFunctions::twig_enabled() ) :
                     // Twig template
-                    Twig::render( 'template-parts/cta-button.twig', $data );
+                    Twig::render( 'template-parts/twig/cta-button.twig', $data );
                 else:
                     // PHP template
-                    get_template_part( 'views/template-parts/cta-button', null, $data );
+                    get_template_part( 'views/template-parts/php/cta-button', null, $data );
                 endif;
             endforeach;
         endif;
