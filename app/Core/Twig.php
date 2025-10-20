@@ -316,19 +316,22 @@ class Twig {
         self::$twig->addGlobal( 'uikit_menu_walker', new UIKitMenuWalker() );
         self::$twig->addGlobal( 'theme_text_domain', ThemeFunctions::TEXT_DOMAIN );
 
-        // Pass contact details to all templates
-        self::$twig->addGlobal( 'contact_details', array(
-            'title'         => get_field( 'contact_title', 'option' ),
-            'subtitle'      => get_field( 'contact_subtitle', 'option' ),
-            'content'       => get_field( 'contact_content', 'option' ),
-            'address'       => get_field( 'contact_address', 'option' ),
-            'phones'        => get_field( 'contact_phones', 'option' ),
-            'emails'        => get_field( 'contact_emails', 'option' ),
-            'contact_form'  => get_field( 'contact_form_shortcode', 'option' )
-        ) );
+        // Check if ACF Pro is active and get contact details and social icons
+        if( class_exists( 'ACF' ) && function_exists( 'get_field' ) ) :
+            // Pass contact details to all templates only if ACF Pro is active
+            self::$twig->addGlobal( 'contact_details', array(
+                'title'         => get_field( 'contact_title', 'option' ),
+                'subtitle'      => get_field( 'contact_subtitle', 'option' ),
+                'content'       => get_field( 'contact_content', 'option' ),
+                'address'       => get_field( 'contact_address', 'option' ),
+                'phones'        => get_field( 'contact_phones', 'option' ),
+                'emails'        => get_field( 'contact_emails', 'option' ),
+                'contact_form'  => get_field( 'contact_form_shortcode', 'option' )
+            ) );
 
-        // Pass social icons to all templates
-        self::$twig->addGlobal( 'social', get_field( 'social', 'option' ) );
+            // Pass social icons to all templates
+            self::$twig->addGlobal( 'social', get_field( 'social', 'option' ) );
+        endif;
     }
     /**
      * Add theme functions to Twig

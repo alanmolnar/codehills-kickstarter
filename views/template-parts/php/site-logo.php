@@ -14,7 +14,7 @@
 defined( 'WPINC' ) || exit;
 
 // Site logo
-if( get_field( 'logo', 'option' ) ) :
+if( class_exists( 'ACF' ) && function_exists( 'get_field' ) && get_field( 'logo', 'option' ) ) :
     // Site logo uploaded via theme options
     echo '<a class="uk-navbar-item uk-logo" href="' . esc_url( site_url() ) . '">
         <img class="uk-preserve" src="' . get_field( 'logo', 'option' ) . '" width="165" height="40" alt="' . get_bloginfo( 'name' ) . '" uk-svg>

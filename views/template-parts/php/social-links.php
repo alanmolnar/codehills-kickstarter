@@ -14,7 +14,7 @@
 defined( 'WPINC' ) || exit;
 
 // Social media list
-if( have_rows( 'social', 'option' ) ) :
+if( class_exists( 'ACF' ) && function_exists( 'get_field' ) && have_rows( 'social', 'option' ) ) :
     echo '<ul class="uk-iconnav">';
 
     while( have_rows( 'social', 'option' ) ) : the_row();

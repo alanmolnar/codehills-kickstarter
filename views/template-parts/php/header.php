@@ -13,10 +13,19 @@
 use CodehillsKickstarter\Core\UIKitMenuWalker;
 
 // Prevent direct access to this file from url
-defined( 'WPINC' ) || exit; ?>
+defined( 'WPINC' ) || exit;
+
+// Check if ACF Pro plugin is active and get enable_preloader option
+if( class_exists( 'ACF' ) && function_exists( 'get_field' ) ) :
+    $enable_preloader = get_field( 'enable_preloader', 'option' ) ? get_field( 'enable_preloader', 'option' ) : false;
+else :
+    $enable_preloader = false;
+endif;
+
+?>
 
 <!DOCTYPE html>
-<html <?php echo get_field( 'enable_preloader', 'option' ) ? 'class="preloader-active"' : ''; ?> <?php language_attributes(); ?>>
+<html <?php echo $enable_preloader ? 'class="preloader-active"' : ''; ?> <?php language_attributes(); ?>>
     <head profile="http://www.w3.org/1999/xhtml/vocab">
         <meta charset="<?php bloginfo( 'charset' ); ?>" />
 
@@ -31,10 +40,16 @@ defined( 'WPINC' ) || exit; ?>
     </head>
 
     <?php
-        // Get page settings
-        $page_header_style          = get_field( 'page_header_style' ) || is_404() ? get_field( 'page_header_style' ) : 'light';
-        $page_header_position       = get_field( 'page_header_position' ) || is_404() ? get_field( 'page_header_position' ) : 'absolute';
-        $header_background_color    = get_field( 'header_background_color' ) ? get_field( 'header_background_color' ) : '';
+        // Get header style
+        if( class_exists( 'ACF' ) && function_exists( 'get_field' ) ) :
+            $page_header_style          = get_field( 'page_header_style' ) || is_404() ? get_field( 'page_header_style' ) : 'light';
+            $page_header_position       = get_field( 'page_header_position' ) || is_404() ? get_field( 'page_header_position' ) : 'absolute';
+            $header_background_color    = get_field( 'header_background_color' ) ? get_field( 'header_background_color' ) : '';
+        else :
+            $page_header_style          = 'light';
+            $page_header_position       = 'absolute';
+            $header_background_color    = '';
+        endif;
 
         // Set page settings for single posts
         if( is_single() ) :
@@ -43,7 +58,7 @@ defined( 'WPINC' ) || exit; ?>
         endif;
     ?>
 
-    <body <?php body_class(); ?> <?php echo get_field( 'enable_preloader', 'option' ) ? 'style="display: none;"' : ''; ?>>
+    <body <?php body_class(); ?> <?php echo $enable_preloader ? 'style="display: none;"' : ''; ?>>
         <!-- Header
         ============================================= -->
         <header class="header-<?php echo $page_header_style; ?> header-<?php echo $page_header_position; ?> transition" <?php echo $header_background_color != '' ? 'style="background-color: ' . $header_background_color . ';"' : ''; ?>>

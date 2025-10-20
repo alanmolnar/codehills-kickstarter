@@ -114,6 +114,11 @@ class ThemeFunctions {
      */
     public static function twig_enabled()
     {
+        // Check if ACF Pro is active and get enable_twig option
+        if ( ! class_exists( 'ACF' ) || ! function_exists( 'get_field' ) ) :
+            return false;
+        endif;
+
         return get_field( 'enable_twig', 'option' );
     }
 

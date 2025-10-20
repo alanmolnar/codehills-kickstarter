@@ -40,6 +40,9 @@ You have successfully cloned the repository to your local machine. You can now n
 
 # Changelog
 
+## 2.2.1 - Oct 20th, 2025
+- ACF Pro missing plugin errors fixed
+
 ## 2.2.0 - Sep 23rd, 2025
 - TGM Plugin Activation replaced with native WP Plugin Dependencies in the ThemePlugins class
 - Duplicate Page plugin added to the theme plugins list
@@ -56,7 +59,7 @@ You have successfully cloned the repository to your local machine. You can now n
 - WP Query class added to replace get_page_by_title functions in the ThemeSetup class
 - PHP warning fixed in UIKitMenuWalker class
 - Function get_post_reading_time added to the ThemeFunctions class
-- Twgi file article-content.twig updated, all PHP functions removed
+- Twig file article-content.twig updated, all PHP functions removed
 - Splide slider added as theme slider/carousel option
 - Content / Media block, grid gap and title position fields added
 - Content / Media blok, .twig and .php templates updated

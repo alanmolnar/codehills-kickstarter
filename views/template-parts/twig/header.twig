@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html {{ get_field( 'enable_preloader', 'option' ) ? 'class="preloader-active"' : '' }} {{ language_attributes() }}>
+<html {{ enable_preloader ? 'class="preloader-active"' : '' }} {{ language_attributes() }}>
     <head profile="http://www.w3.org/1999/xhtml/vocab">
         <meta charset="<?php bloginfo( 'charset' ); ?>" />
 
@@ -13,7 +13,7 @@
         {{ wp_head() }}
     </head>
 
-    <body {{ body_class( 'twig' ) }} {{ get_field( 'enable_preloader', 'option' ) ? 'style="display: none;"' : '' }}>
+    <body {{ body_class( 'twig' ) }} {{ enable_preloader ? 'style="display: none;"' : '' }}>
         <!-- Header
         ============================================= -->
         <header class="header-{{ page_header_style }} header-{{ page_header_position }} transition" {{ header_background_color != '' ? ( 'style="background-color: ' ~ header_background_color ~ ';"' ) | raw : '' }}>

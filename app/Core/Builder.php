@@ -110,7 +110,7 @@ class Builder {
         $title = esc_attr( get_the_title( $page_id ) );
 
         // Check if page builder exist.
-        if( have_rows( 'page_builder', $page_id  ) ) :
+        if( class_exists( 'ACF' ) && function_exists( 'have_rows' ) && have_rows( 'page_builder', $page_id  ) ) :
             echo '<section id="page-builder" class="uk-padding-remove">';
 
             // Render page builder blocks
